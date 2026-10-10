@@ -3,7 +3,7 @@ package nl.novi.recipeapp.entities;
 import jakarta.persistence.*;
 
 @Entity
-@Table(name = "ingredient")
+@Table(name = "ingredients")
 public class IngredientEntity extends BaseEntity {
 
     @Id
