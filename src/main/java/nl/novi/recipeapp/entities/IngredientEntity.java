@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 @Entity
 @Table(name = "ingredient")
 public class IngredientEntity extends BaseEntity {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "ingredient_id")
@@ -12,6 +13,10 @@ public class IngredientEntity extends BaseEntity {
 
     @Column(name = "name")
     private String name;
+
+    public IngredientEntity() {
+
+    }
 
     public IngredientEntity(String name) {
         this.name = name;
