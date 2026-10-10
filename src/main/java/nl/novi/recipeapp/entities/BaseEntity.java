@@ -30,8 +30,8 @@ public abstract class BaseEntity {
         return created_at;
     }
 
-    public void setCreateDate(LocalDateTime createDate) {
-        this.created_at = createDate;
+    public void setCreateDate(LocalDateTime created_at) {
+        this.created_at = created_at;
     }
 
     public LocalDateTime getUpdatedAt() {

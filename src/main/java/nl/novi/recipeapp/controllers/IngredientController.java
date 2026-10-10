@@ -25,6 +25,15 @@ public class IngredientController {
         );
     }
 
+    @GetMapping("/{id}")
+    public ResponseEntity<IngredientEntity> getIngredientById(
+            @PathVariable Long id) {
+
+        return ResponseEntity.ok(
+                ingredientService.getIngredientById(id)
+        );
+    }
+
     @PostMapping
     public ResponseEntity<IngredientEntity> createIngredient(
             @RequestBody IngredientEntity ingredient) {
