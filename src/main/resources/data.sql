@@ -69,3 +69,12 @@ VALUES
     ('Diner', 'Recepten voor het avondeten', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
     ('Vegetarisch', 'Recepten zonder vlees of vis', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
     ('Dessert', 'Zoete gerechten en nagerechten', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
+
+INSERT INTO review_ratings
+    (comment, ratingscore, user_id, recipe_id, created_at, updated_at)
+VALUES
+    ('Heerlijk recept, makkelijk te bereiden!', 5, 1, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+    ('Lekker van smaak, ik maak dit zeker opnieuw.', 4, 1, 2, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+    ('Goed recept, maar de bereiding duurde wat langer.', 3, 2, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+    ('Heel lekker en duidelijke instructies.', 5, 2, 3, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+    ('Prima recept, maar er mocht wat meer kruiden in.', 4, 3, 2, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
