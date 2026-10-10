@@ -1,6 +1,7 @@
 package nl.novi.recipeapp.entities;
 
 import jakarta.persistence.*;
+import nl.novi.recipeapp.entities.BaseEntity;
 
 @Entity
 @Table( name = "recipes")
