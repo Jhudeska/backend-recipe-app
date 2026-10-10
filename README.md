@@ -94,6 +94,9 @@ Maak nu een list example:
 
 # Postman collecties
 - Swaggger link
+- http://localhost:8080/swagger-ui/index.html
+- http://localhost:8080/v3/api-docs
+- 
 - dit document bevat alle endpoints, input en output en security
 - overzicht api functionaluteiten met het doel  en gebruik  van de api 
 - beschrijving van gebruik van json  postman collecgie gebruiken 
