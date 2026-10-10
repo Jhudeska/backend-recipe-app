@@ -61,3 +61,11 @@ VALUES
     ('Knoflook', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
     ('Paprika', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
     ('Courgette', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
+
+INSERT INTO categories (name, description, created_at, updated_at)
+VALUES
+    ('Ontbijt', 'Recepten voor het ontbijt', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+    ('Lunch', 'Recepten voor de lunch', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+    ('Diner', 'Recepten voor het avondeten', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+    ('Vegetarisch', 'Recepten zonder vlees of vis', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+    ('Dessert', 'Zoete gerechten en nagerechten', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
