@@ -107,3 +107,21 @@ VALUES
      NULL, NULL,
      'Ik deel graag mijn favoriete recepten.',
      CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
+
+INSERT INTO recipe_images
+(image_url, created_at, updated_at)
+VALUES
+    ('https://receta.com/photos/pasta-carbonara.jpg',
+     CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+
+    ('https://receta.com/photos/vegetarian-salad.jpg',
+     CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+
+    ('https://receta.com/photos/chicken-curry.jpg',
+     CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+
+    ('https://receta.com/photos/chocolate-cake.jpg',
+     CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+
+    ('https://receta.com/photos/tomato-soup.jpg',
+     CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
