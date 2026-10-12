@@ -1,5 +1,6 @@
 package nl.novi.recipeapp.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 import java.util.ArrayList;
@@ -17,8 +18,10 @@ public class IngredientEntity extends BaseEntity {
     @Column(name = "name")
     private String name;
 
+    @JsonIgnore // negeer oneindige JSON-recursie in de relatie tussen IngredientEntity en RecipeIngredientEntity
     @OneToMany(mappedBy = "ingredient")
     private List<RecipeIngredientEntity> recipeIngredients = new ArrayList<>();
+
     public IngredientEntity() {
 
     }
