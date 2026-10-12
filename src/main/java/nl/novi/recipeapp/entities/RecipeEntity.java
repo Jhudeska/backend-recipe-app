@@ -3,6 +3,9 @@ package nl.novi.recipeapp.entities;
 import jakarta.persistence.*;
 import nl.novi.recipeapp.entities.BaseEntity;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Entity
 @Table( name = "recipes")
 public class RecipeEntity extends BaseEntity{
@@ -25,6 +28,9 @@ public class RecipeEntity extends BaseEntity{
     private Integer preparationTime;
 
     private Integer servings;
+
+    @OneToMany(mappedBy = "recipe")
+    private List<RecipeIngredientEntity> ingredients = new ArrayList<>();
 
     public Long getRecipeId() {
         return recipeId;
