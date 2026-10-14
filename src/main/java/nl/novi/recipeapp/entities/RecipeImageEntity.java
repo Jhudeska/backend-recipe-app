@@ -14,6 +14,14 @@ public class RecipeImageEntity extends BaseEntity {
     @Column(name = "image_url", nullable = false, length = 2048)
     private String imageUrl;
 
+    @OneToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(
+            name = "recipe_id",
+            nullable = false,
+            unique = true
+    )
+    private RecipeEntity recipe;
+
     public RecipeImageEntity() {
     }
 
@@ -31,5 +39,13 @@ public class RecipeImageEntity extends BaseEntity {
 
     public void setImageUrl(String imageUrl) {
         this.imageUrl = imageUrl;
+    }
+
+    public RecipeEntity getRecipe() {
+        return recipe;
+    }
+
+    public void setRecipe(RecipeEntity recipe) {
+        this.recipe = recipe;
     }
 }

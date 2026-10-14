@@ -40,6 +40,12 @@ public class RecipeEntity extends BaseEntity{
     @OneToMany(mappedBy = "recipe")
     private List<RecipeIngredientEntity> ingredients = new ArrayList<>();
 
+    @OneToOne(
+            mappedBy = "recipe",
+            fetch = FetchType.LAZY
+    ) // niet de ideale oplossing, maar voor de opdracht heb ik hier gekozen voor een 1 op 1 relatie
+    private RecipeImageEntity recipeImage;
+
     public Long getRecipeId() {
         return recipeId;
     }
@@ -94,5 +100,13 @@ public class RecipeEntity extends BaseEntity{
 
     public void setCategory(CategoryEntity category) {
         this.category = category;
+    }
+
+    public RecipeImageEntity getRecipeImage() {
+        return recipeImage;
+    }
+
+    public void setRecipeImage(RecipeImageEntity recipeImage) {
+        this.recipeImage = recipeImage;
     }
 }
