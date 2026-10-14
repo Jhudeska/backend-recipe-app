@@ -214,10 +214,35 @@ VALUES
     );
 
 INSERT INTO user_profile_roles
-(role, created_at, updated_at)
+(user_id, role, created_at, updated_at)
 VALUES
-    ('USER', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
-    ('USER', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
-    ('USER', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
-    ('ADMIN', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
-    ('USER', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
+    (
+        (SELECT user_id FROM user_profiles WHERE username = 'jan_kok'),
+        'USER',
+        CURRENT_TIMESTAMP,
+        CURRENT_TIMESTAMP
+    ),
+    (
+        (SELECT user_id FROM user_profiles WHERE username = 'sara_food'),
+        'USER',
+        CURRENT_TIMESTAMP,
+        CURRENT_TIMESTAMP
+    ),
+    (
+        (SELECT user_id FROM user_profiles WHERE username = 'peter_chef'),
+        'CHEF',
+        CURRENT_TIMESTAMP,
+        CURRENT_TIMESTAMP
+    ),
+    (
+        (SELECT user_id FROM user_profiles WHERE username = 'lisa_bakt'),
+        'ADMIN',
+        CURRENT_TIMESTAMP,
+        CURRENT_TIMESTAMP
+    ),
+    (
+        (SELECT user_id FROM user_profiles WHERE username = 'tom_foodie'),
+        'USER',
+        CURRENT_TIMESTAMP,
+        CURRENT_TIMESTAMP
+    );

@@ -1,6 +1,7 @@
 package nl.novi.recipeapp.entities;
 
 import jakarta.persistence.*;
+import nl.novi.recipeapp.enums.Role;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,6 +34,13 @@ public class UserProfileEntity extends BaseEntity {
 
     @OneToMany(mappedBy = "userProfile")
     private List<ReviewRatingEntity> reviews = new ArrayList<>();
+
+    @OneToMany(
+            mappedBy = "userProfile",
+            cascade = CascadeType.ALL,
+            orphanRemoval = true
+    )
+    private List<UserProfileRoleEntity> roles = new ArrayList<>();
 
     public UserProfileEntity() {
     }
@@ -115,4 +123,20 @@ public class UserProfileEntity extends BaseEntity {
     public void setReviews(List<ReviewRatingEntity> reviews) {
         this.reviews = reviews;
     }
+
+    public List<UserProfileRoleEntity> getRoles() {
+        return roles;
+    }
+
+    public void addRole(Role role) {
+        UserProfileRoleEntity userRole = new UserProfileRoleEntity();
+        userRole.setRole(role);
+        userRole.setUserProfile(this);
+        roles.add(userRole);
+    }
+
+//    public void removeRole(UserProfileRoleEntity role) {
+//        roles.remove(role);
+//        role.setUserProfile(null);
+//    }
 }
