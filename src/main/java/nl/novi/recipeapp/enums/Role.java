@@ -1,4 +1,4 @@
-package nl.novi.recipeapp.entities;
+package nl.novi.recipeapp.enums;
 
 public enum Role {
     USER,
