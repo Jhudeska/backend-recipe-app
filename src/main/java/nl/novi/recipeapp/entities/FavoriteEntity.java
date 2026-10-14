@@ -27,6 +27,9 @@ public class FavoriteEntity extends BaseEntity {
     @JoinColumn(name = "recipe_id", nullable = false)
     private RecipeEntity recipe;
 
+    public FavoriteEntity() {
+    }
+
     public Long getFavoriteId() {
         return favoriteId;
     }
