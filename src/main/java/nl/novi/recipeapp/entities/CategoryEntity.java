@@ -11,10 +11,10 @@ public class CategoryEntity extends BaseEntity {
     @Column(name = "category_id")
     private Long categoryId;
 
-    @Column(name = "name", nullable = false)
+    @Column(name = "name", unique = true, length = 100, nullable = false)
     private String name;
 
-    @Column(name = "description")
+    @Column(name = "description", columnDefinition = "TEXT")
     private String description;
 
     public CategoryEntity() {

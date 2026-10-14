@@ -29,6 +29,10 @@ public class RecipeEntity extends BaseEntity{
 
     private Integer servings;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "category_id")
+    private CategoryEntity category;
+
     @OneToMany(mappedBy = "recipe")
     private List<RecipeIngredientEntity> ingredients = new ArrayList<>();
 
@@ -78,5 +82,13 @@ public class RecipeEntity extends BaseEntity{
 
     public void setServings(Integer servings) {
         this.servings = servings;
+    }
+
+    public CategoryEntity getCategory() {
+        return category;
+    }
+
+    public void setCategory(CategoryEntity category) {
+        this.category = category;
     }
 }
