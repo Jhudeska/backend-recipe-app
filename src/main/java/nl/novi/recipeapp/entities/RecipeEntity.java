@@ -33,6 +33,10 @@ public class RecipeEntity extends BaseEntity{
     @JoinColumn(name = "category_id")
     private CategoryEntity category;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id")
+    private UserProfileEntity user;
+
     @OneToMany(mappedBy = "recipe")
     private List<RecipeIngredientEntity> ingredients = new ArrayList<>();
 
