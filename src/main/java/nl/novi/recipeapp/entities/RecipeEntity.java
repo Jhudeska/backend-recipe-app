@@ -108,6 +108,10 @@ public class RecipeEntity extends BaseEntity{
 
     public void setRecipeImage(RecipeImageEntity recipeImage) {
         this.recipeImage = recipeImage;
+
+        if (recipeImage != null && recipeImage.getRecipe() != this) {
+            recipeImage.setRecipe(this);
+        }
     }
 
     public UserProfileEntity getUser() {
