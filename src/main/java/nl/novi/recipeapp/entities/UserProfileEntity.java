@@ -2,6 +2,9 @@ package nl.novi.recipeapp.entities;
 
 import jakarta.persistence.*;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Entity
 @Table(name = "user_profiles")
 public class UserProfileEntity extends BaseEntity {
@@ -27,6 +30,9 @@ public class UserProfileEntity extends BaseEntity {
 
     @Column(name = "bio", columnDefinition = "TEXT")
     private String bio;
+
+    @OneToMany(mappedBy = "userProfile")
+    private List<ReviewRatingEntity> reviews = new ArrayList<>();
 
     public UserProfileEntity() {
     }
@@ -100,5 +106,13 @@ public class UserProfileEntity extends BaseEntity {
 
     public void setBio(String bio) {
         this.bio = bio;
+    }
+
+    public List<ReviewRatingEntity> getReviews() {
+        return reviews;
+    }
+
+    public void setReviews(List<ReviewRatingEntity> reviews) {
+        this.reviews = reviews;
     }
 }
