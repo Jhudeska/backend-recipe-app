@@ -2,6 +2,8 @@ package nl.novi.recipeapp.entities;
 
 import jakarta.persistence.*;
 
+import java.math.BigDecimal;
+
 @Entity
 @Table(
         name = "recipe_ingredients",
@@ -28,7 +30,7 @@ public class RecipeIngredientEntity extends BaseEntity {
     private IngredientEntity ingredient;
 
     @Column(nullable = false)
-    private Double quantity;
+    private BigDecimal quantity;
 
     @Column(length = 50)
     private String unit;
@@ -60,11 +62,12 @@ public class RecipeIngredientEntity extends BaseEntity {
         this.ingredient = ingredient;
     }
 
-    public Double getQuantity() {
+    public BigDecimal getQuantity() {
         return quantity;
     }
 
-    public void setQuantity(Double quantity) {
+    //gebruik BigDecimal om te voorkomen dat er precisieproblemen optreden
+    public void setQuantity(BigDecimal quantity) {
         this.quantity = quantity;
     }
 

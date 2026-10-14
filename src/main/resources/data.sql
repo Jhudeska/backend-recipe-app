@@ -62,6 +62,66 @@ VALUES
     ('Paprika', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
     ('Courgette', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
 
+INSERT INTO recipe_ingredients (
+    recipe_id,
+    ingredient_id,
+    quantity,
+    unit,
+    created_at,
+    updated_at
+)
+VALUES
+    (
+        (SELECT recipe_id FROM recipes
+         WHERE title = 'Spaghetti Bolognese'),
+        (SELECT ingredient_id FROM ingredients
+         WHERE name = 'Tomaat'),
+        400,
+        'gram',
+        CURRENT_TIMESTAMP,
+        CURRENT_TIMESTAMP
+    ),
+    (
+        (SELECT recipe_id FROM recipes
+         WHERE title = 'Spaghetti Bolognese'),
+        (SELECT ingredient_id FROM ingredients
+         WHERE name = 'Ui'),
+        1,
+        'stuk',
+        CURRENT_TIMESTAMP,
+        CURRENT_TIMESTAMP
+    ),
+    (
+        (SELECT recipe_id FROM recipes
+         WHERE title = 'Spaghetti Bolognese'),
+        (SELECT ingredient_id FROM ingredients
+         WHERE name = 'Knoflook'),
+        2,
+        'tenen',
+        CURRENT_TIMESTAMP,
+        CURRENT_TIMESTAMP
+    ),
+    (
+        (SELECT recipe_id FROM recipes
+         WHERE title = 'Tomatensoep'),
+        (SELECT ingredient_id FROM ingredients
+         WHERE name = 'Tomaat'),
+        500,
+        'gram',
+        CURRENT_TIMESTAMP,
+        CURRENT_TIMESTAMP
+    ),
+    (
+        (SELECT recipe_id FROM recipes
+         WHERE title = 'Tomatensoep'),
+        (SELECT ingredient_id FROM ingredients
+         WHERE name = 'Ui'),
+        1,
+        'stuk',
+        CURRENT_TIMESTAMP,
+        CURRENT_TIMESTAMP
+    );
+
 INSERT INTO categories (name, description, created_at, updated_at)
 VALUES
     ('Ontbijt', 'Recepten voor het ontbijt', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
@@ -110,22 +170,48 @@ VALUES
     ('Prima recept, maar er mocht wat meer kruiden in.', 4, 3, 2, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
 
 INSERT INTO recipe_images
-(image_url, created_at, updated_at)
+(recipe_id, image_url, created_at, updated_at)
 VALUES
-    ('https://receta.com/photos/pasta-carbonara.jpg',
-     CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
-
-    ('https://receta.com/photos/vegetarian-salad.jpg',
-     CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
-
-    ('https://receta.com/photos/chicken-curry.jpg',
-     CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
-
-    ('https://receta.com/photos/chocolate-cake.jpg',
-     CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
-
-    ('https://receta.com/photos/tomato-soup.jpg',
-     CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
+    (
+        (SELECT recipe_id
+         FROM recipes
+         WHERE title = 'Spaghetti Bolognese'),
+        'https://receta.com/photos/spaghetti-bolognese.jpg',
+        CURRENT_TIMESTAMP,
+        CURRENT_TIMESTAMP
+    ),
+    (
+        (SELECT recipe_id
+         FROM recipes
+         WHERE title = 'Pannenkoeken'),
+        'https://receta.com/photos/pancakes.jpg',
+        CURRENT_TIMESTAMP,
+        CURRENT_TIMESTAMP
+    ),
+    (
+        (SELECT recipe_id
+         FROM recipes
+         WHERE title = 'Caesarsalade'),
+        'https://receta.com/photos/caesar-salad.jpg',
+        CURRENT_TIMESTAMP,
+        CURRENT_TIMESTAMP
+    ),
+    (
+        (SELECT recipe_id
+         FROM recipes
+         WHERE title = 'Tomatensoep'),
+        'https://receta.com/photos/tomato-soup.jpg',
+        CURRENT_TIMESTAMP,
+        CURRENT_TIMESTAMP
+    ),
+    (
+        (SELECT recipe_id
+         FROM recipes
+         WHERE title = 'Gebakken zalm met groenten'),
+        'https://receta.com/photos/baked-salmon.jpg',
+        CURRENT_TIMESTAMP,
+        CURRENT_TIMESTAMP
+    );
 
 INSERT INTO user_profile_roles
 (role, created_at, updated_at)

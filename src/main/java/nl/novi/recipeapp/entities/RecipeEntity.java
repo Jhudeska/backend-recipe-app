@@ -109,4 +109,20 @@ public class RecipeEntity extends BaseEntity{
     public void setRecipeImage(RecipeImageEntity recipeImage) {
         this.recipeImage = recipeImage;
     }
+
+    public UserProfileEntity getUser() {
+        return user;
+    }
+
+    public void setUser(UserProfileEntity user) {
+        this.user = user;
+    }
+
+    public List<RecipeIngredientEntity> getIngredients() {
+        return ingredients;
+    }
+
+    public void setIngredients(List<RecipeIngredientEntity> ingredients) {
+        this.ingredients = ingredients;
+    }
 }

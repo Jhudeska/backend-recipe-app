@@ -6,6 +6,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 @RestController
@@ -50,7 +51,7 @@ public class RecipeIngredientController {
     public ResponseEntity<RecipeIngredientEntity> createRecipeIngredient(
             @RequestParam Long recipeId,
             @RequestParam Long ingredientId,
-            @RequestParam Double quantity,
+            @RequestParam BigDecimal quantity,
             @RequestParam String unit) {
 
         RecipeIngredientEntity newRecipeIngredient =

@@ -8,6 +8,7 @@ import nl.novi.recipeapp.repositories.RecipeIngredientRepository;
 import nl.novi.recipeapp.repositories.RecipeRepository;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 @Service
@@ -46,7 +47,7 @@ public class RecipeIngredientService {
 
     public RecipeIngredientEntity createRecipeIngredient(
             Long recipeId, Long ingredientId,
-            Double quantity, String unit) {
+            BigDecimal quantity, String unit) {
 
         RecipeEntity recipe = recipeRepository.findById(recipeId)
                 .orElseThrow(() -> new RuntimeException(
