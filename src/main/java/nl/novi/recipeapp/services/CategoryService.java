@@ -1,8 +1,8 @@
 package nl.novi.recipeapp.services;
 
+import nl.novi.recipeapp.dtos.category.CategoryResponseDto;
 import org.springframework.transaction.annotation.Transactional;
-import nl.novi.recipeapp.dtos.CategoryDto;
-import nl.novi.recipeapp.dtos.CategoryRequestDto;
+import nl.novi.recipeapp.dtos.category.CategoryRequestDto;
 import nl.novi.recipeapp.entities.CategoryEntity;
 import nl.novi.recipeapp.mappers.CategoryMapper;
 import nl.novi.recipeapp.repositories.CategoryRepository;
@@ -21,28 +21,24 @@ public class CategoryService {
         this.categoryMapper = categoryMapper;
     }
 
-    public List<CategoryDto> getAllCategories() {
+    public List<CategoryResponseDto> getAllCategories() {
         return categoryRepository.findAll()
                 .stream()
-                .map(categoryMapper::toDto)
+                .map(categoryMapper::toResponseDto)
                 .toList();
     }
 
     @Transactional(readOnly = true)
-    public CategoryDto getCategoryById(Long id) {
+    public CategoryResponseDto getCategoryById(Long id) {
 
 
 
-        CategoryEntity category = categoryRepository.findById(id)
-                .orElseThrow(() ->
-                        new RuntimeException(
-                                "Categorie niet gevonden met ID: " + id
-                        )
-                );
-        return categoryMapper.toDto(category);
+        CategoryEntity category = findCategoryById(id);
+        return categoryMapper.toResponseDto(category);
     }
 
-    public CategoryDto createCategory(CategoryRequestDto categoryRequestDto) {
+    public CategoryResponseDto createCategory(CategoryRequestDto categoryRequestDto) {
+
         if (categoryRepository.existsByName(categoryRequestDto.name())) {
             throw new IllegalArgumentException(
                     "Deze categorienaam bestaat al: " + categoryRequestDto.name()
@@ -50,21 +46,16 @@ public class CategoryService {
         }
         CategoryEntity category = categoryMapper.toEntity(categoryRequestDto);
         CategoryEntity savedCategory = categoryRepository.save(category);
-        return categoryMapper.toDto(savedCategory);
+        return categoryMapper.toResponseDto(savedCategory);
 
 
     }
 
-    public CategoryDto updateCategory(
+    public CategoryResponseDto updateCategory(
             Long id,
             CategoryRequestDto categoryRequestDto) {
 
-        CategoryEntity existingCategory = categoryRepository.findById(id)
-                .orElseThrow(() ->
-                        new RuntimeException(
-                                "Categorie niet gevonden met ID: " + id
-                        )
-                );
+        CategoryEntity existingCategory = findCategoryById(id);
 
         boolean nameChanged =
                 !existingCategory.getName().equals(categoryRequestDto.name());
@@ -83,17 +74,20 @@ public class CategoryService {
 
         CategoryEntity savedCategory = categoryRepository.save(existingCategory);
 
-        return categoryMapper.toDto(savedCategory);
+        return categoryMapper.toResponseDto(savedCategory);
     }
 
     public void deleteCategory(Long id) {
-        CategoryEntity existingCategory =
-                categoryRepository.findById(id)
-                        .orElseThrow( () ->
-                                new RuntimeException(
-                                        "Categorie niet gevonden met ID: + id"
-                                ));
-
+        CategoryEntity existingCategory = findCategoryById(id);
         categoryRepository.delete(existingCategory);
+    }
+
+    private CategoryEntity findCategoryById(Long id) {
+        return categoryRepository.findById(id)
+                .orElseThrow(() ->
+                        new RuntimeException(
+                                "Categorie niet gevonden met ID: " + id
+                        )
+                );
     }
 }

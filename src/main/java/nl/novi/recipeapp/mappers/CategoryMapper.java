@@ -1,16 +1,15 @@
 package nl.novi.recipeapp.mappers;
-
-import nl.novi.recipeapp.dtos.CategoryDto;
-import nl.novi.recipeapp.dtos.CategoryRequestDto;
+import nl.novi.recipeapp.dtos.category.CategoryRequestDto;
+import nl.novi.recipeapp.dtos.category.CategoryResponseDto;
 import nl.novi.recipeapp.entities.CategoryEntity;
 import org.springframework.stereotype.Component;
 
 @Component
 public class CategoryMapper {
 
-    public CategoryDto toDto(CategoryEntity category) {
+    public CategoryResponseDto toResponseDto(CategoryEntity category) {
 
-        return new CategoryDto(
+        return new CategoryResponseDto(
                 category.getCategoryId(),
                 category.getName(),
                 category.getDescription()
