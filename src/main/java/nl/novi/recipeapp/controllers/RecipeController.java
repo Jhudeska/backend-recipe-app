@@ -1,6 +1,7 @@
 package nl.novi.recipeapp.controllers;
 
 
+import nl.novi.recipeapp.dtos.RecipeDto;
 import nl.novi.recipeapp.entities.RecipeEntity;
 import nl.novi.recipeapp.services.RecipeService;
 import org.springframework.http.HttpStatus;
@@ -20,7 +21,7 @@ public class RecipeController {
     }
 
     @GetMapping
-    public ResponseEntity<List<RecipeEntity>> getAllRecipes() {
+    public ResponseEntity<List<RecipeDto>> getAllRecipes() {
         return ResponseEntity
                 .ok(recipeService.getAllRecipes());
     }
