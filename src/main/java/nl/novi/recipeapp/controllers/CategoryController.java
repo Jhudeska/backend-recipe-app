@@ -1,5 +1,8 @@
 package nl.novi.recipeapp.controllers;
 
+import jakarta.validation.Valid;
+import nl.novi.recipeapp.dtos.CategoryDto;
+import nl.novi.recipeapp.dtos.CategoryRequestDto;
 import nl.novi.recipeapp.entities.CategoryEntity;
 import nl.novi.recipeapp.services.CategoryService;
 import org.springframework.http.HttpStatus;
@@ -19,14 +22,14 @@ public class CategoryController {
     }
 
     @GetMapping
-    public ResponseEntity<List<CategoryEntity>> getAllCategories() {
+    public ResponseEntity<List<CategoryDto>> getAllCategories() {
         return ResponseEntity.ok(
                 categoryService.getAllCategories()
         );
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<CategoryEntity> getCategoryById(
+    public ResponseEntity<CategoryDto> getCategoryById(
             @PathVariable Long id) {
 
         return ResponseEntity.ok(
@@ -35,11 +38,11 @@ public class CategoryController {
     }
 
     @PostMapping
-    public ResponseEntity<CategoryEntity> createCategory(
-            @RequestBody CategoryEntity category) {
+    public ResponseEntity<CategoryDto> createCategory(
+            @Valid @RequestBody CategoryRequestDto categoryRequestDto) {
 
-        CategoryEntity createdCategory =
-                categoryService.createCategory(category);
+        CategoryDto createdCategory =
+                categoryService.createCategory(categoryRequestDto);
 
         return ResponseEntity
                 .status(HttpStatus.CREATED)
@@ -47,12 +50,12 @@ public class CategoryController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<CategoryEntity> updateCategory(
+    public ResponseEntity<CategoryDto> updateCategory(
             @PathVariable Long id,
-            @RequestBody CategoryEntity category) {
+            @RequestBody CategoryRequestDto categoryRequestDto) {
 
         return ResponseEntity.ok(
-                categoryService.updateCategory(id, category)
+                categoryService.updateCategory(id, categoryRequestDto)
         );
     }
 
