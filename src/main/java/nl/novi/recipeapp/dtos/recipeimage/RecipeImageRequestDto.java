@@ -2,6 +2,7 @@ package nl.novi.recipeapp.dtos.recipeimage;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Positive;
 import jakarta.validation.constraints.Size;
 
 public record RecipeImageRequestDto(
@@ -11,6 +12,7 @@ public record RecipeImageRequestDto(
         String imageUrl,
 
         @NotNull(message = "Recipe ID is required")
+        @Positive(message = "Recipe ID must be positive")
         Long recipeId
 
 ) { }

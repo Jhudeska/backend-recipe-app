@@ -25,6 +25,11 @@ public class RecipeImageEntity extends BaseEntity {
     public RecipeImageEntity() {
     }
 
+    public RecipeImageEntity(String imageUrl, RecipeEntity recipe) {
+        this.imageUrl = imageUrl;
+        this.recipe = recipe;
+    }
+
     public Long getRecipeImageId() {
         return recipeImageId;
     }

@@ -1,5 +1,8 @@
 package nl.novi.recipeapp.controllers;
 
+import jakarta.validation.Valid;
+import nl.novi.recipeapp.dtos.recipeimage.RecipeImageRequestDto;
+import nl.novi.recipeapp.dtos.recipeimage.RecipeImageResponseDto;
 import nl.novi.recipeapp.entities.RecipeImageEntity;
 import nl.novi.recipeapp.services.RecipeImageService;
 import org.springframework.http.HttpStatus;
@@ -20,14 +23,14 @@ public class RecipeImageController {
     }
 
     @GetMapping
-    public ResponseEntity<List<RecipeImageEntity>> getAllRecipeImages() {
+    public ResponseEntity<List<RecipeImageResponseDto>> getAllRecipeImages() {
         return ResponseEntity.ok(
                 recipeImageService.getAllRecipeImages()
         );
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<RecipeImageEntity> getRecipeImageById(
+    public ResponseEntity<RecipeImageResponseDto> getRecipeImageById(
             @PathVariable Long id) {
         return ResponseEntity.ok(
                 recipeImageService.getRecipeImageById(id)
@@ -35,11 +38,11 @@ public class RecipeImageController {
     }
 
     @PostMapping
-    public ResponseEntity<RecipeImageEntity> createRecipeImage(
-            @RequestBody RecipeImageEntity recipeImage) {
+    public ResponseEntity<RecipeImageResponseDto> createRecipeImage(
+            @Valid @RequestBody RecipeImageRequestDto requestDto) {
 
-        RecipeImageEntity createdRecipeImage =
-                recipeImageService.createRecipeImage(recipeImage);
+        RecipeImageResponseDto createdRecipeImage =
+                recipeImageService.createRecipeImage(requestDto);
 
         return ResponseEntity
                 .status(HttpStatus.CREATED)
@@ -47,12 +50,12 @@ public class RecipeImageController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<RecipeImageEntity> updateRecipeImage(
+    public ResponseEntity<RecipeImageResponseDto> updateRecipeImage(
             @PathVariable Long id,
-            @RequestBody RecipeImageEntity recipeImage) {
+            @Valid @RequestBody RecipeImageRequestDto requestDto) {
 
         return ResponseEntity.ok(
-                recipeImageService.updateRecipeImage(id, recipeImage)
+                recipeImageService.updateRecipeImage(id, requestDto)
         );
     }
 

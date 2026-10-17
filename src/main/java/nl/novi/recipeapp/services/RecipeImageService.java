@@ -1,8 +1,14 @@
 package nl.novi.recipeapp.services;
 
+import nl.novi.recipeapp.dtos.recipeimage.RecipeImageRequestDto;
+import nl.novi.recipeapp.dtos.recipeimage.RecipeImageResponseDto;
+import nl.novi.recipeapp.entities.RecipeEntity;
 import nl.novi.recipeapp.entities.RecipeImageEntity;
+import nl.novi.recipeapp.mappers.RecipeImageMapper;
 import nl.novi.recipeapp.repositories.RecipeImageRepository;
+import nl.novi.recipeapp.repositories.RecipeRepository;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -10,47 +16,101 @@ import java.util.List;
 public class RecipeImageService {
     
     private final RecipeImageRepository recipeImageRepository;
+    private final RecipeRepository recipeRepository;
+    private final RecipeImageMapper recipeImageMapper;
 
 
     public RecipeImageService(
-            RecipeImageRepository recipeImageRepository) {
+            RecipeImageRepository recipeImageRepository, RecipeRepository recipeRepository, RecipeImageMapper recipeImageMapper) {
         this.recipeImageRepository = recipeImageRepository;
+        this.recipeRepository = recipeRepository;
+        this.recipeImageMapper = recipeImageMapper;
     }
 
-    public List<RecipeImageEntity> getAllRecipeImages() {
-        return recipeImageRepository.findAll();
+    @Transactional(readOnly = true)
+    public List<RecipeImageResponseDto> getAllRecipeImages() {
+        return recipeImageRepository.findAll()
+                .stream()
+                .map(recipeImageMapper::toResponseDto)
+                .toList();
     }
 
-    public RecipeImageEntity getRecipeImageById(Long id) {
-        return recipeImageRepository.findById(id)
-                .orElseThrow(() ->
-                        new RuntimeException(
-                                "RecipeImage niet gevonden met id: " + id
-                        )
-                );
+    @Transactional(readOnly = true)
+    public RecipeImageResponseDto getRecipeImageById(Long id) {
+        return recipeImageMapper.toResponseDto(findRecipeImageById(id));
     }
 
-    public RecipeImageEntity createRecipeImage(
-            RecipeImageEntity recipeImage) {
-        return recipeImageRepository.save(recipeImage);
-    }
+    public RecipeImageResponseDto createRecipeImage(
+            RecipeImageRequestDto requestDto) {
 
-    public RecipeImageEntity updateRecipeImage(
-            Long id,
-            RecipeImageEntity updatedRecipeImage) {
+        if (recipeImageRepository.existsByRecipe_RecipeId(
+                requestDto.recipeId())) {
+            throw new IllegalArgumentException(
+                    "An image already exists for recipe ID: "
+                            + requestDto.recipeId()
+            );
+        }
 
-        RecipeImageEntity existingRecipeImage =
-                getRecipeImageById(id);
+        RecipeEntity recipe = recipeRepository.findById(
+                requestDto.recipeId()
+        ).orElseThrow(() -> new RuntimeException(
+                "Recipe not found with ID: " + requestDto.recipeId()
+        ));
 
-        existingRecipeImage.setImageUrl(
-                updatedRecipeImage.getImageUrl()
+        RecipeImageEntity recipeImage = new RecipeImageEntity(
+                requestDto.imageUrl().trim(),
+                recipe
         );
 
-        return recipeImageRepository.save(existingRecipeImage);
+        RecipeImageEntity savedRecipeImage = recipeImageRepository.save(recipeImage);
+
+        return recipeImageMapper.toResponseDto(savedRecipeImage);
+    }
+
+    public RecipeImageResponseDto updateRecipeImage(
+            Long id,
+            RecipeImageRequestDto requestDto) {
+
+        RecipeImageEntity existingRecipeImage =
+                findRecipeImageById(id);
+
+        RecipeEntity recipe = recipeRepository.findById(
+                requestDto.recipeId()
+        ).orElseThrow(() -> new RuntimeException(
+                "Recipe not found with ID: " + requestDto.recipeId()
+        ));
+
+        boolean recipeChanged = !existingRecipeImage.getRecipe()
+                .getRecipeId().equals(requestDto.recipeId());
+
+        if (recipeChanged && recipeImageRepository.existsByRecipe_RecipeId(
+                requestDto.recipeId())) {
+            throw new IllegalArgumentException(
+                    "An image already exists for recipe ID: "
+                            + requestDto.recipeId()
+            );
+        }
+
+        existingRecipeImage.setImageUrl(
+                requestDto.imageUrl().trim()
+        );
+        existingRecipeImage.setRecipe(recipe);
+
+        RecipeImageEntity savedRecipeImage = recipeImageRepository.save(existingRecipeImage);
+
+        return recipeImageMapper.toResponseDto(savedRecipeImage);
     }
 
     public void deleteRecipeImage(Long id) {
-        RecipeImageEntity recipeImage = getRecipeImageById(id);
+        RecipeImageEntity recipeImage = findRecipeImageById(id);
         recipeImageRepository.delete(recipeImage);
+    }
+
+    private RecipeImageEntity findRecipeImageById(Long id) {
+
+        return recipeImageRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException(
+                        "Recipe image not found with ID: " + id
+                ));
     }
 }
