@@ -208,7 +208,7 @@ VALUES
         (SELECT recipe_id
          FROM recipes
          WHERE title = 'Gebakken zalm met groenten'),
-        'https://receta.com/photos/baked-salmon.jpg',
+        'https://images.unsplash.com/photo-1791398667285-345d7cc05a04?q=80&w=763&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=NHwxMjA3fDA%3D',
         CURRENT_TIMESTAMP,
         CURRENT_TIMESTAMP
     );
