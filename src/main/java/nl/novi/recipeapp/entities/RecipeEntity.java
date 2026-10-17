@@ -1,7 +1,6 @@
 package nl.novi.recipeapp.entities;
 
 import jakarta.persistence.*;
-import nl.novi.recipeapp.entities.BaseEntity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -37,12 +36,16 @@ public class RecipeEntity extends BaseEntity{
     @JoinColumn(name = "user_id")
     private UserProfileEntity user;
 
-    @OneToMany(mappedBy = "recipe")
+    @OneToMany(mappedBy = "recipe",
+                cascade = CascadeType.REMOVE
+    )
     private List<RecipeIngredientEntity> ingredients = new ArrayList<>();
 
     @OneToOne(
             mappedBy = "recipe",
-            fetch = FetchType.LAZY
+            fetch = FetchType.LAZY,
+            cascade = CascadeType.REMOVE,
+            orphanRemoval = true
     ) // niet de ideale oplossing, maar voor de opdracht heb ik hier gekozen voor een 1 op 1 relatie
     private RecipeImageEntity recipeImage;
 

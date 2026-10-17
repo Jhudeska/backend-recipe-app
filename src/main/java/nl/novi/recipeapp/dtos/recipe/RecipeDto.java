@@ -1,4 +1,4 @@
-package nl.novi.recipeapp.dtos;
+package nl.novi.recipeapp.dtos.recipe;
 
 public record RecipeDto(
         Long recipeId,

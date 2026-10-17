@@ -1,6 +1,7 @@
-package nl.novi.recipeapp.dtos;
+package nl.novi.recipeapp.dtos.recipe;
 
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
 import jakarta.validation.constraints.Size;
 
@@ -18,9 +19,12 @@ public record RecipeRequestDto(
         @Positive(message = "Preparation time must be greater than zero")
         Integer preparationTime,
 
+        @NotNull(message = "Servings are required")
         @Positive(message = "Servings must be greater than zero")
         Integer servings,
 
+        @NotNull(message = "Category ID is required")
         Long categoryId
 
-) { }
+) {
+}
