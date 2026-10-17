@@ -1,53 +1,117 @@
 package nl.novi.recipeapp.services;
 
+import nl.novi.recipeapp.dtos.userprofilerole.UserProfileRoleRequestDto;
+import nl.novi.recipeapp.dtos.userprofilerole.UserProfileRoleResponseDto;
+import nl.novi.recipeapp.entities.UserProfileEntity;
 import nl.novi.recipeapp.entities.UserProfileRoleEntity;
+import nl.novi.recipeapp.mappers.UserProfileRoleMapper;
+import nl.novi.recipeapp.repositories.UserProfileRepository;
 import nl.novi.recipeapp.repositories.UserProfileRoleRepository;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
 @Service
 public class UserProfileRoleService {
     private final UserProfileRoleRepository userRoleRepository;
+    private final UserProfileRepository userProfileRepository;
+    private final UserProfileRoleMapper userRoleMapper;
 
     public UserProfileRoleService(
-            UserProfileRoleRepository userRoleRepository) {
+            UserProfileRoleRepository userRoleRepository, UserProfileRepository userProfileRepository, UserProfileRoleMapper userRoleMapper) {
         this.userRoleRepository = userRoleRepository;
+        this.userProfileRepository = userProfileRepository;
+        this.userRoleMapper = userRoleMapper;
     }
 
-    public List<UserProfileRoleEntity> getAllUserRoles() {
-        return userRoleRepository.findAll();
+    @Transactional(readOnly = true)
+    public List<UserProfileRoleResponseDto> getAllUserRoles() {
+
+        return userRoleRepository.findAll()
+                .stream()
+                .map(userRoleMapper::toResponseDto)
+                .toList();
     }
 
-    public UserProfileRoleEntity getUserRoleById(Long id) {
-        return userRoleRepository.findById(id)
-                .orElseThrow(() ->
-                        new RuntimeException(
-                                "UserRole niet gevonden met id: " + id
-                        )
-                );
+    @Transactional(readOnly = true)
+    public UserProfileRoleResponseDto getUserRoleById(Long id) {
+        return userRoleMapper.toResponseDto(findUserRoleById(id));
     }
 
-    public UserProfileRoleEntity createUserRole(
-            UserProfileRoleEntity userRole) {
-        return userRoleRepository.save(userRole);
+    public UserProfileRoleResponseDto createUserRole(
+            UserProfileRoleRequestDto requestDto) {
+
+        UserProfileEntity userProfile =
+                userProfileRepository.findById(requestDto.userId())
+                        .orElseThrow(() -> new RuntimeException(
+                                "User not found with ID: "
+                                        + requestDto.userId()
+                        ));
+
+        if (userRoleRepository.existsByUserProfile_UserIdAndRole(
+                requestDto.userId(), requestDto.role())) {
+            throw new IllegalArgumentException(
+                    "This user already has the role: "
+                            + requestDto.role()
+            );
+        }
+
+        UserProfileRoleEntity userRole = new UserProfileRoleEntity(
+                requestDto.role(),
+                userProfile
+        );
+        UserProfileRoleEntity savedUserRole = userRoleRepository.save(userRole);
+
+        return userRoleMapper.toResponseDto(savedUserRole);
     }
 
-    public UserProfileRoleEntity updateUserRole(
+    public UserProfileRoleResponseDto updateUserRole(
             Long id,
-            UserProfileRoleEntity updatedUserRole) {
+            UserProfileRoleRequestDto requestDto) {
 
         UserProfileRoleEntity existingUserRole =
-                getUserRoleById(id);
+                findUserRoleById(id);
 
-        existingUserRole.setRole(updatedUserRole.getRole());
+        UserProfileEntity userProfile =
+                userProfileRepository.findById(requestDto.userId())
+                        .orElseThrow(() -> new RuntimeException(
+                                "User not found with ID: "
+                                        + requestDto.userId()
+                        ));
 
-        return userRoleRepository.save(existingUserRole);
+        boolean roleChanged =
+                !existingUserRole.getRole().equals(requestDto.role())
+                        || !existingUserRole.getUserProfile()
+                        .getUserId().equals(requestDto.userId());
+
+        if (roleChanged
+                && userRoleRepository.existsByUserProfile_UserIdAndRole(
+                requestDto.userId(), requestDto.role())) {
+            throw new IllegalArgumentException(
+                    "This user already has the role: "
+                            + requestDto.role()
+            );
+        }
+
+        existingUserRole.setRole(requestDto.role());
+        existingUserRole.setUserProfile(userProfile);
+
+        UserProfileRoleEntity savedUserRole = userRoleRepository.save(existingUserRole);
+        return userRoleMapper.toResponseDto(savedUserRole);
     }
 
     public void deleteUserRole(Long id) {
-        UserProfileRoleEntity userRole = getUserRoleById(id);
+        UserProfileRoleEntity userRole = findUserRoleById(id);
         userRoleRepository.delete(userRole);
+    }
+
+    private UserProfileRoleEntity findUserRoleById(Long id) {
+
+        return userRoleRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException(
+                        "User role not found with ID: " + id
+                ));
     }
 
 }

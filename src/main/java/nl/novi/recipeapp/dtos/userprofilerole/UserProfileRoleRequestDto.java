@@ -6,6 +6,9 @@ import nl.novi.recipeapp.enums.Role;
 public record UserProfileRoleRequestDto(
 
         @NotNull(message = "Role is required")
-        Role role
+        Role role,
+
+        @NotNull(message = "User ID is required")
+        Long userId
 
 ) { }

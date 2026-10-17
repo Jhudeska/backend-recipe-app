@@ -1,18 +1,20 @@
 package nl.novi.recipeapp.mappers;
 
-import nl.novi.recipeapp.dtos.userprofilerole.UserProfileRoleDto;
+import nl.novi.recipeapp.dtos.userprofilerole.UserProfileRoleResponseDto;
 import nl.novi.recipeapp.entities.UserProfileRoleEntity;
 import org.springframework.stereotype.Component;
 
 @Component
 public class UserProfileRoleMapper {
 
-    public UserProfileRoleDto toDto(UserProfileRoleEntity userRole) {
+    public UserProfileRoleResponseDto toResponseDto(UserProfileRoleEntity userRole) {
 
-        return new UserProfileRoleDto(
+        return new UserProfileRoleResponseDto(
                 userRole.getUserProfileRoleId(),
                 userRole.getRole(),
-                userRole.getUserProfile().getUserId()
+                userRole.getUserProfile().getUserId(),
+                userRole.getCreated_at(),
+                userRole.getUpdated_at()
         );
     }
 }

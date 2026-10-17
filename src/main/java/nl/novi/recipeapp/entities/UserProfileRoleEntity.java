@@ -4,7 +4,15 @@ import jakarta.persistence.*;
 import nl.novi.recipeapp.enums.Role;
 
 @Entity
-@Table(name = "user_profile_roles")
+@Table(
+        name = "user_profile_roles",
+        uniqueConstraints = {
+                @UniqueConstraint(
+                        name = "uk_user_profile_role",
+                        columnNames = {"user_id", "role"}
+                )
+        }
+)
 public class UserProfileRoleEntity extends BaseEntity{
 
     @Id
@@ -21,6 +29,11 @@ public class UserProfileRoleEntity extends BaseEntity{
     private UserProfileEntity userProfile;
 
     public UserProfileRoleEntity() {
+    }
+
+    public UserProfileRoleEntity(Role role, UserProfileEntity userProfile) {
+        this.role = role;
+        this.userProfile = userProfile;
     }
 
     public Long getUserProfileRoleId() {

@@ -1,6 +1,8 @@
 package nl.novi.recipeapp.controllers;
 
-import nl.novi.recipeapp.entities.UserProfileRoleEntity;
+import jakarta.validation.Valid;
+import nl.novi.recipeapp.dtos.userprofilerole.UserProfileRoleRequestDto;
+import nl.novi.recipeapp.dtos.userprofilerole.UserProfileRoleResponseDto;
 import nl.novi.recipeapp.services.UserProfileRoleService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -11,6 +13,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/v1/user_profile_roles")
 public class UserProfileRoleController {
+
     private final UserProfileRoleService userProfileRoleService;
 
     public UserProfileRoleController(
@@ -19,14 +22,14 @@ public class UserProfileRoleController {
     }
 
     @GetMapping
-    public ResponseEntity<List<UserProfileRoleEntity>> getAllUserRoles() {
+    public ResponseEntity<List<UserProfileRoleResponseDto>> getAllUserRoles() {
         return ResponseEntity.ok(
                 userProfileRoleService.getAllUserRoles()
         );
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<UserProfileRoleEntity> getUserRoleById(
+    public ResponseEntity<UserProfileRoleResponseDto> getUserRoleById(
             @PathVariable Long id) {
         return ResponseEntity.ok(
                 userProfileRoleService.getUserRoleById(id)
@@ -34,11 +37,11 @@ public class UserProfileRoleController {
     }
 
     @PostMapping
-    public ResponseEntity<UserProfileRoleEntity> createUserRole(
-            @RequestBody UserProfileRoleEntity userRole) {
+    public ResponseEntity<UserProfileRoleResponseDto> createUserRole(
+            @Valid @RequestBody UserProfileRoleRequestDto requestDto ) {
 
-        UserProfileRoleEntity createdUserRole =
-                userProfileRoleService.createUserRole(userRole);
+        UserProfileRoleResponseDto createdUserRole =
+                userProfileRoleService.createUserRole(requestDto);
 
         return ResponseEntity
                 .status(HttpStatus.CREATED)
@@ -46,12 +49,12 @@ public class UserProfileRoleController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<UserProfileRoleEntity> updateUserRole(
+    public ResponseEntity<UserProfileRoleResponseDto> updateUserRole(
             @PathVariable Long id,
-            @RequestBody UserProfileRoleEntity userRole) {
+            @Valid @RequestBody UserProfileRoleRequestDto requestDto) {
 
         return ResponseEntity.ok(
-                userProfileRoleService.updateUserRole(id, userRole)
+                userProfileRoleService.updateUserRole(id, requestDto)
         );
     }
 
