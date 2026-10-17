@@ -1,4 +1,4 @@
-package nl.novi.recipeapp.dtos;
+package nl.novi.recipeapp.dtos.recipeingredient;
 
 import jakarta.validation.constraints.DecimalMin;
 import jakarta.validation.constraints.NotNull;

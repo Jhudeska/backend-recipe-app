@@ -1,4 +1,4 @@
-package nl.novi.recipeapp.dtos;
+package nl.novi.recipeapp.dtos.userprofilerole;
 
 import nl.novi.recipeapp.enums.Role;
 

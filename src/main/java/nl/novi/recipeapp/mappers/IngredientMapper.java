@@ -1,7 +1,7 @@
 package nl.novi.recipeapp.mappers;
 
-import nl.novi.recipeapp.dtos.IngredientDto;
-import nl.novi.recipeapp.dtos.IngredientRequestDto;
+import nl.novi.recipeapp.dtos.ingredient.IngredientDto;
+import nl.novi.recipeapp.dtos.ingredient.IngredientRequestDto;
 import nl.novi.recipeapp.entities.IngredientEntity;
 import org.springframework.stereotype.Component;
 

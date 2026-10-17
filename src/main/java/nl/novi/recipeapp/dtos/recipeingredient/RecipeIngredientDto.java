@@ -1,4 +1,4 @@
-package nl.novi.recipeapp.dtos;
+package nl.novi.recipeapp.dtos.recipeingredient;
 
 import java.math.BigDecimal;
 

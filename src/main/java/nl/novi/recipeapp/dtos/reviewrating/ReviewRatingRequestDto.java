@@ -1,4 +1,4 @@
-package nl.novi.recipeapp.dtos;
+package nl.novi.recipeapp.dtos.reviewrating;
 
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;

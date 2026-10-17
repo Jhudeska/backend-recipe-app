@@ -1,4 +1,4 @@
-package nl.novi.recipeapp.dtos;
+package nl.novi.recipeapp.dtos.userprofile;
 
 public record UserProfileDto(
         Long userId,

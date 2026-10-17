@@ -1,4 +1,4 @@
-package nl.novi.recipeapp.dtos;
+package nl.novi.recipeapp.dtos.ingredient;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;

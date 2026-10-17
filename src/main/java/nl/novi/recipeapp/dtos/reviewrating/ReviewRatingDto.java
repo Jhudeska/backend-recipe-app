@@ -1,4 +1,4 @@
-package nl.novi.recipeapp.dtos;
+package nl.novi.recipeapp.dtos.reviewrating;
 
 public record ReviewRatingDto(
         Long reviewRatingId,
