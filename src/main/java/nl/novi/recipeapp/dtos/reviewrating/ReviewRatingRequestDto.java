@@ -16,6 +16,7 @@ public record ReviewRatingRequestDto(
         Integer ratingScore,
 
         @NotNull(message = "Recipe ID is required")
+        @Min(value = 1, message = "Recipe ID must be positive")
         Long recipeId
 
 ) { }
