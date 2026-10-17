@@ -1,24 +1,29 @@
 package nl.novi.recipeapp.services;
 
+import nl.novi.recipeapp.dtos.RecipeDto;
 import nl.novi.recipeapp.entities.RecipeEntity;
+import nl.novi.recipeapp.mappers.RecipeMapper;
 import nl.novi.recipeapp.repositories.RecipeRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-import static org.springframework.data.jpa.domain.AbstractPersistable_.id;
-
 @Service
 public class RecipeService {
 
     private final RecipeRepository recipeRepository;
+    private final RecipeMapper recipeMapper;
 
-    public RecipeService(RecipeRepository recipeRepository) {
+    public RecipeService(RecipeRepository recipeRepository, RecipeMapper recipeMapper) {
         this.recipeRepository = recipeRepository;
+        this.recipeMapper = recipeMapper;
     }
 
-    public List<RecipeEntity> getAllRecipes() {
-        return recipeRepository.findAll();
+    public List<RecipeDto> getAllRecipes() {
+        return recipeRepository.findAll()
+                .stream()
+                .map(recipeMapper::toOverviewDto)
+                .toList();
     }
 
     public RecipeEntity getRecipeById(Long id) {
