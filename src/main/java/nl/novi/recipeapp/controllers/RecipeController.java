@@ -2,10 +2,8 @@ package nl.novi.recipeapp.controllers;
 
 
 import jakarta.validation.Valid;
-import nl.novi.recipeapp.dtos.recipe.RecipeDto;
 import nl.novi.recipeapp.dtos.recipe.RecipeRequestDto;
 import nl.novi.recipeapp.dtos.recipe.RecipeResponseDto;
-import nl.novi.recipeapp.entities.RecipeEntity;
 import nl.novi.recipeapp.services.RecipeService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
