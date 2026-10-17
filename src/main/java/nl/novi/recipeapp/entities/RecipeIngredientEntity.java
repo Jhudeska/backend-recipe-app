@@ -29,7 +29,7 @@ public class RecipeIngredientEntity extends BaseEntity {
     @JoinColumn(name = "ingredient_id", nullable = false)
     private IngredientEntity ingredient;
 
-    @Column(nullable = false)
+    @Column(nullable = false, precision = 10, scale = 3)
     private BigDecimal quantity;
 
     @Column(length = 50)

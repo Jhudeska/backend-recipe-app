@@ -12,5 +12,16 @@ public interface RecipeIngredientRepository extends JpaRepository<RecipeIngredie
 
     List<RecipeIngredientEntity> findByIngredient_IngredientId(Long ingredientId);
 
+    boolean existsByRecipe_RecipeIdAndIngredient_IngredientId(
+            Long recipeId,
+            Long ingredientId
+    );
+
+    boolean existsByRecipe_RecipeIdAndIngredient_IngredientIdAndRecipeIngredientIdNot(
+            Long recipeId,
+            Long ingredientId,
+            Long recipeIngredientId
+    );
+
     void deleteByRecipe_RecipeId(Long recipeId);
 }
