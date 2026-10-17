@@ -1,6 +1,8 @@
 package nl.novi.recipeapp.controllers;
 
-import nl.novi.recipeapp.entities.ReviewRatingEntity;
+import jakarta.validation.Valid;
+import nl.novi.recipeapp.dtos.reviewrating.ReviewRatingRequestDto;
+import nl.novi.recipeapp.dtos.reviewrating.ReviewRatingResponseDto;
 import nl.novi.recipeapp.services.ReviewRatingService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,7 +22,7 @@ public class ReviewRatingController {
     }
 
     @GetMapping
-    public ResponseEntity<List<ReviewRatingEntity>>
+    public ResponseEntity<List<ReviewRatingResponseDto>>
     getAllReviewRatings() {
         return ResponseEntity.ok(
                 reviewRatingService.getAllReviewRatings()
@@ -28,7 +30,7 @@ public class ReviewRatingController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<ReviewRatingEntity>
+    public ResponseEntity<ReviewRatingResponseDto>
     getReviewRatingById(@PathVariable Long id) {
         return ResponseEntity.ok(
                 reviewRatingService.getReviewRatingById(id)
@@ -36,12 +38,13 @@ public class ReviewRatingController {
     }
 
     @PostMapping
-    public ResponseEntity<ReviewRatingEntity>
+    public ResponseEntity<ReviewRatingResponseDto>
     createReviewRating(
-            @RequestBody ReviewRatingEntity reviewRating) {
+            @PathVariable Long id,
+            @Valid @RequestBody ReviewRatingRequestDto requestDto) {
 
-        ReviewRatingEntity createdReviewRating =
-                reviewRatingService.createReviewRating(reviewRating);
+        ReviewRatingResponseDto createdReviewRating =
+                reviewRatingService.createReviewRating(id, requestDto);
 
         return ResponseEntity
                 .status(HttpStatus.CREATED)
@@ -49,13 +52,13 @@ public class ReviewRatingController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<ReviewRatingEntity>
+    public ResponseEntity<ReviewRatingResponseDto>
     updateReviewRating(
             @PathVariable Long id,
-            @RequestBody ReviewRatingEntity reviewRating) {
+            @Valid @RequestBody ReviewRatingRequestDto requestDto) {
 
         return ResponseEntity.ok(
-                reviewRatingService.updateReviewRating(id, reviewRating)
+                reviewRatingService.updateReviewRating(id, requestDto)
         );
     }
 

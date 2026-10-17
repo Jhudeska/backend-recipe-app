@@ -1,5 +1,9 @@
 package nl.novi.recipeapp.controllers;
 
+import jakarta.validation.Valid;
+import nl.novi.recipeapp.dtos.userprofile.UserProfileRequestDto;
+import nl.novi.recipeapp.dtos.userprofile.UserProfileResponseDto;
+import nl.novi.recipeapp.dtos.userprofile.UserProfileUpdateDto;
 import nl.novi.recipeapp.entities.UserProfileEntity;
 import nl.novi.recipeapp.services.UserProfileService;
 import org.springframework.http.HttpStatus;
@@ -20,14 +24,14 @@ public class UserProfileController {
     }
 
     @GetMapping
-    public ResponseEntity<List<UserProfileEntity>> getAllUserProfiles() {
+    public ResponseEntity<List<UserProfileResponseDto>> getAllUserProfiles() {
         return ResponseEntity.ok(
                 userProfileService.getAllUserProfiles()
         );
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<UserProfileEntity> getUserProfileById(
+    public ResponseEntity<UserProfileResponseDto> getUserProfileById(
             @PathVariable Long id) {
         return ResponseEntity.ok(
                 userProfileService.getUserProfileById(id)
@@ -35,11 +39,11 @@ public class UserProfileController {
     }
 
     @PostMapping
-    public ResponseEntity<UserProfileEntity> createUserProfile(
-            @RequestBody UserProfileEntity userProfile) {
+    public ResponseEntity<UserProfileResponseDto> createUserProfile(
+            @Valid @RequestBody UserProfileRequestDto requestDto) {
 
-        UserProfileEntity createdUserProfile =
-                userProfileService.createUserProfile(userProfile);
+        UserProfileResponseDto createdUserProfile =
+                userProfileService.createUserProfile(requestDto);
 
         return ResponseEntity
                 .status(HttpStatus.CREATED)
@@ -47,12 +51,12 @@ public class UserProfileController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<UserProfileEntity> updateUserProfile(
+    public ResponseEntity<UserProfileResponseDto> updateUserProfile(
             @PathVariable Long id,
-            @RequestBody UserProfileEntity userProfile) {
+            @Valid @RequestBody UserProfileUpdateDto requestDto) {
 
         return ResponseEntity.ok(
-                userProfileService.updateUserProfile(id, userProfile)
+                userProfileService.updateUserProfile(id, requestDto)
         );
     }
 

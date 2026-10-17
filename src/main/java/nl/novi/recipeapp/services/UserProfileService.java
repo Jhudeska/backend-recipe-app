@@ -1,63 +1,123 @@
 package nl.novi.recipeapp.services;
 
+import nl.novi.recipeapp.dtos.userprofile.UserProfileRequestDto;
+import nl.novi.recipeapp.dtos.userprofile.UserProfileResponseDto;
+import nl.novi.recipeapp.dtos.userprofile.UserProfileUpdateDto;
 import nl.novi.recipeapp.entities.UserProfileEntity;
+import nl.novi.recipeapp.mappers.UserProfileMapper;
 import nl.novi.recipeapp.repositories.UserProfileRepository;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
 @Service
 public class UserProfileService {
     private final UserProfileRepository userProfileRepository;
+    private final UserProfileMapper userProfileMapper;
 
     public UserProfileService(
-            UserProfileRepository userProfileRepository) {
+            UserProfileRepository userProfileRepository, UserProfileMapper userProfileMapper) {
         this.userProfileRepository = userProfileRepository;
+        this.userProfileMapper = userProfileMapper;
     }
 
-    public List<UserProfileEntity> getAllUserProfiles() {
-        return userProfileRepository.findAll();
+    @Transactional(readOnly = true)
+    public List<UserProfileResponseDto> getAllUserProfiles() {
+        return userProfileRepository.findAll()
+                .stream()
+                .map(userProfileMapper::toResponseDto)
+                .toList();
     }
 
-    public UserProfileEntity getUserProfileById(Long id) {
-        return userProfileRepository.findById(id)
-                .orElseThrow(() ->
-                        new RuntimeException(
-                                "Gebruikersprofiel niet gevonden met ID: " + id
-                        )
-                );
+    @Transactional(readOnly = true)
+    public UserProfileResponseDto getUserProfileById(Long id) {
+        return userProfileMapper.toResponseDto(findUserProfileById(id));
     }
 
-    public UserProfileEntity createUserProfile(
-            UserProfileEntity userProfile) {
-        return userProfileRepository.save(userProfile);
+    public UserProfileResponseDto createUserProfile(
+            UserProfileRequestDto requestDto) {
+
+        String username = requestDto.username().trim();
+        String email = requestDto.email().trim().toLowerCase();
+
+        if (userProfileRepository.existsByUsernameIgnoreCase(username)) {
+            throw new IllegalArgumentException(
+                    "Username already exists: " + username
+            );
+        }
+
+        if (userProfileRepository.existsByEmailIgnoreCase(email)) {
+            throw new IllegalArgumentException(
+                    "Email already exists: " + email
+            );
+        }
+
+        UserProfileEntity userProfile =
+                userProfileMapper.toEntity(requestDto);
+        UserProfileEntity savedUserProfile = userProfileRepository.save(userProfile);
+
+        return userProfileMapper.toResponseDto(savedUserProfile);
     }
 
-    public UserProfileEntity updateUserProfile(
+    public UserProfileResponseDto updateUserProfile(
             Long id,
-            UserProfileEntity userProfile) {
+            UserProfileUpdateDto requestDto) {
 
         UserProfileEntity existingUserProfile =
-                getUserProfileById(id);
+                findUserProfileById(id);
 
-        existingUserProfile.setUsername(userProfile.getUsername());
-        existingUserProfile.setEmail(userProfile.getEmail());
-        existingUserProfile.setPassword(userProfile.getPassword());
-        existingUserProfile.setPasswordResetToken(
-                userProfile.getPasswordResetToken()
-        );
+        String username = requestDto.username().trim();
+        String email = requestDto.email().trim().toLowerCase();
+
+        boolean usernameChanged =
+                !existingUserProfile.getUsername().equalsIgnoreCase(username);
+
+        boolean emailChanged =
+                !existingUserProfile.getEmail().equalsIgnoreCase(email);
+
+        if (usernameChanged
+                && userProfileRepository.existsByUsernameIgnoreCase(username)) {
+            throw new IllegalArgumentException(
+                    "Username already exists: " + username
+            );
+        }
+
+        if (emailChanged
+                && userProfileRepository.existsByEmailIgnoreCase(email)) {
+            throw new IllegalArgumentException(
+                    "Email already exists: " + email
+            );
+        }
+
+        existingUserProfile.setUsername(username);
+        existingUserProfile.setEmail(email);
+//        existingUserProfile.setPassword(requestDto.password);
+//        existingUserProfile.setPasswordResetToken(
+//                requestDto.passwordResetToken()
+//        );
         existingUserProfile.setProfilePhotoUrl(
-                userProfile.getProfilePhotoUrl()
+                requestDto.profilePhotoUrl()
         );
-        existingUserProfile.setBio(userProfile.getBio());
+        existingUserProfile.setBio(requestDto.bio());
 
-        return userProfileRepository.save(existingUserProfile);
+
+        UserProfileEntity savedUserProfile = userProfileRepository.save(existingUserProfile);
+
+        return userProfileMapper.toResponseDto(savedUserProfile);
     }
 
     public void deleteUserProfile(Long id) {
         UserProfileEntity existingUserProfile =
-                getUserProfileById(id);
-
+                findUserProfileById(id);
         userProfileRepository.delete(existingUserProfile);
+    }
+
+    private UserProfileEntity findUserProfileById(Long id) {
+
+        return userProfileRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException(
+                        "User profile not found with ID: " + id
+                ));
     }
 }

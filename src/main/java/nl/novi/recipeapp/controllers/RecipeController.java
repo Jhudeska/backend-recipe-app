@@ -1,7 +1,9 @@
 package nl.novi.recipeapp.controllers;
 
 
-import nl.novi.recipeapp.entities.RecipeEntity;
+import jakarta.validation.Valid;
+import nl.novi.recipeapp.dtos.recipe.RecipeRequestDto;
+import nl.novi.recipeapp.dtos.recipe.RecipeResponseDto;
 import nl.novi.recipeapp.services.RecipeService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,20 +22,21 @@ public class RecipeController {
     }
 
     @GetMapping
-    public ResponseEntity<List<RecipeEntity>> getAllRecipes() {
+    public ResponseEntity<List<RecipeResponseDto>> getAllRecipes() {
         return ResponseEntity
                 .ok(recipeService.getAllRecipes());
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<RecipeEntity> getRecipeById(@PathVariable Long id) {
+    public ResponseEntity<RecipeResponseDto> getRecipeById(@PathVariable Long id) {
         return ResponseEntity
                 .ok(recipeService.getRecipeById(id));
     }
 
     @PostMapping
-    public ResponseEntity<RecipeEntity> createRecipe(@RequestBody RecipeEntity recipe){
-        RecipeEntity newRecipe = recipeService.createRecipe(recipe);
+    public ResponseEntity<RecipeResponseDto> createRecipe(@Valid @RequestBody RecipeRequestDto recipeRequestDto){
+        RecipeResponseDto newRecipe =
+                recipeService.createRecipe(recipeRequestDto);
 
         return ResponseEntity
                 .status(HttpStatus.CREATED)
@@ -41,8 +44,10 @@ public class RecipeController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<RecipeEntity> updateRecipe(@PathVariable Long id, @RequestBody RecipeEntity recipe){
-        RecipeEntity updatedRecipe = recipeService.updateRecipe(id, recipe);
+    public ResponseEntity<RecipeResponseDto> updateRecipe(
+            @PathVariable Long id,
+            @Valid @RequestBody RecipeRequestDto recipeRequestDto){
+        RecipeResponseDto updatedRecipe = recipeService.updateRecipe(id, recipeRequestDto);
 
         return ResponseEntity
                 .ok(updatedRecipe);

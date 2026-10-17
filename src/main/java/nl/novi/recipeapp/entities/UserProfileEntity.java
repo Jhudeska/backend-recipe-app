@@ -1,6 +1,10 @@
 package nl.novi.recipeapp.entities;
 
 import jakarta.persistence.*;
+import nl.novi.recipeapp.enums.Role;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "user_profiles")
@@ -10,10 +14,10 @@ public class UserProfileEntity extends BaseEntity {
     @Column(name = "user_id")
     private Long userId;
 
-    @Column(name = "username", nullable = false, unique = true)
+    @Column(name = "username", nullable = false, unique = true, length = 100)
     private String username;
 
-    @Column(name = "email", nullable = false, unique = true)
+    @Column(name = "email", nullable = false, unique = true, length = 255)
     private String email;
 
     @Column(name = "password", nullable = false)
@@ -27,6 +31,20 @@ public class UserProfileEntity extends BaseEntity {
 
     @Column(name = "bio", columnDefinition = "TEXT")
     private String bio;
+
+    @OneToMany(mappedBy = "userProfile")
+    private List<ReviewRatingEntity> reviews = new ArrayList<>();
+
+    @OneToMany(
+            mappedBy = "userProfile",
+            cascade = CascadeType.ALL,
+            orphanRemoval = true
+    )
+    private List<UserProfileRoleEntity> roles = new ArrayList<>();
+
+    @OneToMany(mappedBy = "userProfile")
+    private List<FavoriteEntity> favorites = new ArrayList<>();
+
 
     public UserProfileEntity() {
     }
@@ -101,4 +119,36 @@ public class UserProfileEntity extends BaseEntity {
     public void setBio(String bio) {
         this.bio = bio;
     }
+
+    public List<ReviewRatingEntity> getReviews() {
+        return reviews;
+    }
+
+    public void setReviews(List<ReviewRatingEntity> reviews) {
+        this.reviews = reviews;
+    }
+
+    public List<UserProfileRoleEntity> getRoles() {
+        return roles;
+    }
+
+    public void setRoles(List<UserProfileRoleEntity> roles) {
+        this.roles = roles;
+    }
+
+    public void setFavorites(List<FavoriteEntity> favorites) {
+        this.favorites = favorites;
+    }
+
+    public void addRole(Role role) {
+        UserProfileRoleEntity userRole = new UserProfileRoleEntity();
+        userRole.setRole(role);
+        userRole.setUserProfile(this);
+        roles.add(userRole);
+    }
+
+//    public void removeRole(UserProfileRoleEntity role) {
+//        roles.remove(role);
+//        role.setUserProfile(null);
+//    }
 }
