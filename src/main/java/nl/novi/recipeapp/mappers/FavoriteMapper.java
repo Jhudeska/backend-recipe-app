@@ -1,6 +1,4 @@
 package nl.novi.recipeapp.mappers;
-
-import nl.novi.recipeapp.dtos.favorite.FavoriteDto;
 import nl.novi.recipeapp.dtos.favorite.FavoriteResponseDto;
 import nl.novi.recipeapp.entities.FavoriteEntity;
 import org.springframework.stereotype.Component;

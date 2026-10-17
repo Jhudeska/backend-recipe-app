@@ -17,7 +17,7 @@ public class IngredientEntity extends BaseEntity {
     @Column(name = "ingredient_id")
     private Long ingredientId;
 
-    @Column(name = "name")
+    @Column(name = "name", nullable = false, unique = true, length = 255)
     private String name;
 
     @JsonIgnore // negeer oneindige JSON-recursie in de relatie tussen IngredientEntity en RecipeIngredientEntity

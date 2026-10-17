@@ -1,18 +1,20 @@
 package nl.novi.recipeapp.mappers;
 
-import nl.novi.recipeapp.dtos.ingredient.IngredientDto;
 import nl.novi.recipeapp.dtos.ingredient.IngredientRequestDto;
+import nl.novi.recipeapp.dtos.ingredient.IngredientResponseDto;
 import nl.novi.recipeapp.entities.IngredientEntity;
 import org.springframework.stereotype.Component;
 
 @Component
 public class IngredientMapper {
 
-    public IngredientDto toDto(IngredientEntity ingredient) {
+    public IngredientResponseDto toResponseDto(IngredientEntity ingredient) {
 
-        return new IngredientDto(
+        return new IngredientResponseDto(
                 ingredient.getIngredientId(),
-                ingredient.getName()
+                ingredient.getName(),
+                ingredient.getCreated_at(),
+                ingredient.getUpdated_at()
         );
     }
 
