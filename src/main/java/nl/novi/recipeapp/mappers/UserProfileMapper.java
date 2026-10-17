@@ -2,20 +2,23 @@ package nl.novi.recipeapp.mappers;
 
 import nl.novi.recipeapp.dtos.userprofile.UserProfileDto;
 import nl.novi.recipeapp.dtos.userprofile.UserProfileRequestDto;
+import nl.novi.recipeapp.dtos.userprofile.UserProfileResponseDto;
 import nl.novi.recipeapp.entities.UserProfileEntity;
 import org.springframework.stereotype.Component;
 
 @Component
 public class UserProfileMapper {
 
-    public UserProfileDto toDto(UserProfileEntity user) {
+    public UserProfileResponseDto toResponseDto(UserProfileEntity user) {
 
-        return new UserProfileDto(
+        return new UserProfileResponseDto(
                 user.getUserId(),
                 user.getUsername(),
                 user.getEmail(),
                 user.getProfilePhotoUrl(),
-                user.getBio()
+                user.getBio(),
+                user.getCreated_at(),
+                user.getUpdated_at()
         );
     }
 

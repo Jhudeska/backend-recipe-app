@@ -14,10 +14,10 @@ public class UserProfileEntity extends BaseEntity {
     @Column(name = "user_id")
     private Long userId;
 
-    @Column(name = "username", nullable = false, unique = true)
+    @Column(name = "username", nullable = false, unique = true, length = 100)
     private String username;
 
-    @Column(name = "email", nullable = false, unique = true)
+    @Column(name = "email", nullable = false, unique = true, length = 255)
     private String email;
 
     @Column(name = "password", nullable = false)
@@ -41,6 +41,10 @@ public class UserProfileEntity extends BaseEntity {
             orphanRemoval = true
     )
     private List<UserProfileRoleEntity> roles = new ArrayList<>();
+
+    @OneToMany(mappedBy = "userProfile")
+    private List<FavoriteEntity> favorites = new ArrayList<>();
+
 
     public UserProfileEntity() {
     }
@@ -126,6 +130,14 @@ public class UserProfileEntity extends BaseEntity {
 
     public List<UserProfileRoleEntity> getRoles() {
         return roles;
+    }
+
+    public void setRoles(List<UserProfileRoleEntity> roles) {
+        this.roles = roles;
+    }
+
+    public void setFavorites(List<FavoriteEntity> favorites) {
+        this.favorites = favorites;
     }
 
     public void addRole(Role role) {
