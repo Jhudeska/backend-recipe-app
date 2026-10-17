@@ -1,18 +1,20 @@
 package nl.novi.recipeapp.mappers;
 
-import nl.novi.recipeapp.dtos.FavoriteDto;
+import nl.novi.recipeapp.dtos.favorite.FavoriteDto;
+import nl.novi.recipeapp.dtos.favorite.FavoriteResponseDto;
 import nl.novi.recipeapp.entities.FavoriteEntity;
 import org.springframework.stereotype.Component;
 
 @Component
 public class FavoriteMapper {
 
-    public FavoriteDto toDto(FavoriteEntity favorite) {
+    public FavoriteResponseDto toResponseDto(FavoriteEntity favorite) {
 
-        return new FavoriteDto(
+        return new FavoriteResponseDto(
                 favorite.getFavoriteId(),
                 favorite.getRecipe().getRecipeId(),
-                favorite.getRecipe().getTitle()
+                favorite.getRecipe().getTitle(),
+                favorite.getCreated_at()
         );
     }
 }

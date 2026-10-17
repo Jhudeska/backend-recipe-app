@@ -1,5 +1,8 @@
 package nl.novi.recipeapp.controllers;
 
+import jakarta.validation.Valid;
+import nl.novi.recipeapp.dtos.favorite.FavoriteRequestDto;
+import nl.novi.recipeapp.dtos.favorite.FavoriteResponseDto;
 import nl.novi.recipeapp.entities.FavoriteEntity;
 import nl.novi.recipeapp.services.FavoriteService;
 import org.springframework.http.HttpStatus;
@@ -19,14 +22,14 @@ public class FavoriteController {
     }
 
     @GetMapping("/user/{userId}")
-    public ResponseEntity<List<FavoriteEntity>> getAllFavorites(
+    public ResponseEntity<List<FavoriteResponseDto>> getAllFavorites(
             @PathVariable Long userId) {
         return ResponseEntity
                 .ok(favoriteService.getAllFavorites(userId));
     }
 
     @GetMapping("/user/{userId}/recipe/{recipeId}")
-    public ResponseEntity<FavoriteEntity> getFavoriteByRecipeId(
+    public ResponseEntity<FavoriteResponseDto> getFavoriteByRecipeId(
             @PathVariable Long userId,
             @PathVariable Long recipeId) {
         return ResponseEntity
@@ -34,11 +37,12 @@ public class FavoriteController {
     }
 
     @PostMapping("/user/{userId}/recipe/{recipeId}")
-    public ResponseEntity<FavoriteEntity> createFavorite(
+    public ResponseEntity<FavoriteResponseDto> createFavorite(
             @PathVariable Long userId,
-            @PathVariable Long recipeId) {
-        FavoriteEntity newFavorite =
-                favoriteService.createFavorite(userId, recipeId);
+            @Valid @RequestBody FavoriteRequestDto requestDto) {
+
+        FavoriteResponseDto newFavorite =
+                favoriteService.createFavorite(userId, requestDto);
 
         return ResponseEntity
                 .status(HttpStatus.CREATED)
