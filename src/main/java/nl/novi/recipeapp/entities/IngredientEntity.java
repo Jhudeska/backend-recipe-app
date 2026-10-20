@@ -1,7 +1,13 @@
 package nl.novi.recipeapp.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 
+import java.util.ArrayList;
+import java.util.List;
+
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 @Entity
 @Table(name = "ingredients")
 public class IngredientEntity extends BaseEntity {
@@ -11,8 +17,12 @@ public class IngredientEntity extends BaseEntity {
     @Column(name = "ingredient_id")
     private Long ingredientId;
 
-    @Column(name = "name")
+    @Column(name = "name", nullable = false, unique = true, length = 255)
     private String name;
+
+    @JsonIgnore // negeer oneindige JSON-recursie in de relatie tussen IngredientEntity en RecipeIngredientEntity
+    @OneToMany(mappedBy = "ingredient")
+    private List<RecipeIngredientEntity> recipeIngredients = new ArrayList<>();
 
     public IngredientEntity() {
 
@@ -36,5 +46,13 @@ public class IngredientEntity extends BaseEntity {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public List<RecipeIngredientEntity> getRecipeIngredients() {
+        return recipeIngredients;
+    }
+
+    public void setRecipeIngredients(List<RecipeIngredientEntity> recipeIngredients) {
+        this.recipeIngredients = recipeIngredients;
     }
 }

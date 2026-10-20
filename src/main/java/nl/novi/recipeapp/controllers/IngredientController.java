@@ -1,5 +1,8 @@
 package nl.novi.recipeapp.controllers;
 
+import jakarta.validation.Valid;
+import nl.novi.recipeapp.dtos.ingredient.IngredientRequestDto;
+import nl.novi.recipeapp.dtos.ingredient.IngredientResponseDto;
 import nl.novi.recipeapp.entities.IngredientEntity;
 import nl.novi.recipeapp.services.IngredientService;
 import org.springframework.http.HttpStatus;
@@ -19,14 +22,14 @@ public class IngredientController {
     }
 
     @GetMapping
-    public ResponseEntity<List<IngredientEntity>> getAllIngredients() {
+    public ResponseEntity<List<IngredientResponseDto>> getAllIngredients() {
         return ResponseEntity.ok(
                 ingredientService.getAllIngredients()
         );
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<IngredientEntity> getIngredientById(
+    public ResponseEntity<IngredientResponseDto> getIngredientById(
             @PathVariable Long id) {
 
         return ResponseEntity.ok(
@@ -35,11 +38,11 @@ public class IngredientController {
     }
 
     @PostMapping
-    public ResponseEntity<IngredientEntity> createIngredient(
-            @RequestBody IngredientEntity ingredient) {
+    public ResponseEntity<IngredientResponseDto> createIngredient(
+            @Valid @RequestBody IngredientRequestDto requestDto) {
 
-        IngredientEntity createdIngredient =
-                ingredientService.createIngredient(ingredient);
+        IngredientResponseDto createdIngredient =
+                ingredientService.createIngredient(requestDto);
 
         return ResponseEntity
                 .status(HttpStatus.CREATED)
@@ -47,12 +50,12 @@ public class IngredientController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<IngredientEntity> updateIngredient(
+    public ResponseEntity<IngredientResponseDto> updateIngredient(
             @PathVariable Long id,
-            @RequestBody IngredientEntity ingredient) {
+            @RequestBody IngredientRequestDto requestDto) {
 
         return ResponseEntity.ok(
-                ingredientService.updateIngredient(id, ingredient)
+                ingredientService.updateIngredient(id, requestDto)
         );
     }
 

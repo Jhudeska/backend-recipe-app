@@ -1,6 +1,8 @@
 package nl.novi.recipeapp.entities;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.Min;
 
 @Entity
 @Table(name = "review_ratings")
@@ -11,17 +13,21 @@ public class ReviewRatingEntity extends BaseEntity {
     @Column(name = "review_rating_id")
     private Long reviewRatingId;
 
-    @Column(name = "comment")
+    @Column(name = "comment", columnDefinition = "TEXT")
     private String comment;
 
+    @Min(1)
+    @Max(5)
     @Column(name = "ratingscore", nullable = false)
     private Integer ratingScore;
 
-    @Column(name = "user_id", nullable = false)
-    private Long userId;
+    @ManyToOne(fetch = FetchType.LAZY , optional = false)
+    @JoinColumn(name = "user_id", nullable = false)
+    private UserProfileEntity userProfile;
 
-    @Column(name = "recipe_id", nullable = false)
-    private Long recipeId;
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "recipe_id", nullable = false)
+    private RecipeEntity recipe;
 
     public ReviewRatingEntity() {
     }
@@ -29,12 +35,12 @@ public class ReviewRatingEntity extends BaseEntity {
     public ReviewRatingEntity(
             String comment,
             Integer ratingScore,
-            Long userId,
-            Long recipeId) {
+            UserProfileEntity userProfile,
+            RecipeEntity recipe) {
         this.comment = comment;
         this.ratingScore = ratingScore;
-        this.userId = userId;
-        this.recipeId = recipeId;
+        this.userProfile = userProfile;
+        this.recipe = recipe;
     }
 
     public Long getReviewRatingId() {
@@ -61,19 +67,21 @@ public class ReviewRatingEntity extends BaseEntity {
         this.ratingScore = ratingScore;
     }
 
-    public Long getUserId() {
-        return userId;
+
+
+    public UserProfileEntity getUserProfile() {
+        return userProfile;
     }
 
-    public void setUserId(Long userId) {
-        this.userId = userId;
+    public void setUserProfile(UserProfileEntity userProfile) {
+        this.userProfile = userProfile;
     }
 
-    public Long getRecipeId() {
-        return recipeId;
+    public RecipeEntity getRecipe() {
+        return recipe;
     }
 
-    public void setRecipeId(Long recipeId) {
-        this.recipeId = recipeId;
+    public void setRecipe(RecipeEntity recipe) {
+        this.recipe = recipe;
     }
 }

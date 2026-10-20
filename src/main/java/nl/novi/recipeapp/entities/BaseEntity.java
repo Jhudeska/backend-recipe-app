@@ -26,19 +26,19 @@ public abstract class BaseEntity {
 
     // Getters en Setters
 
-    public LocalDateTime getCreateDate() {
+    public LocalDateTime getCreated_at() {
         return created_at;
     }
 
-    public void setCreateDate(LocalDateTime created_at) {
+    public void setCreated_at(LocalDateTime created_at) {
         this.created_at = created_at;
     }
 
-    public LocalDateTime getUpdatedAt() {
+    public LocalDateTime getUpdated_at() {
         return updated_at;
     }
 
-    public void setUpdatedAt(LocalDateTime updatedAt) {
-        this.updated_at = updatedAt;
+    public void setUpdated_at(LocalDateTime updated_at) {
+        this.updated_at = updated_at;
     }
 }

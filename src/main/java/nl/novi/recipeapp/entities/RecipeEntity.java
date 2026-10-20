@@ -1,7 +1,9 @@
 package nl.novi.recipeapp.entities;
 
 import jakarta.persistence.*;
-import nl.novi.recipeapp.entities.BaseEntity;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table( name = "recipes")
@@ -25,6 +27,27 @@ public class RecipeEntity extends BaseEntity{
     private Integer preparationTime;
 
     private Integer servings;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "category_id")
+    private CategoryEntity category;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id")
+    private UserProfileEntity user;
+
+    @OneToMany(mappedBy = "recipe",
+                cascade = CascadeType.REMOVE
+    )
+    private List<RecipeIngredientEntity> ingredients = new ArrayList<>();
+
+    @OneToOne(
+            mappedBy = "recipe",
+            fetch = FetchType.LAZY,
+            cascade = CascadeType.REMOVE,
+            orphanRemoval = true
+    ) // niet de ideale oplossing, maar voor de opdracht heb ik hier gekozen voor een 1 op 1 relatie
+    private RecipeImageEntity recipeImage;
 
     public Long getRecipeId() {
         return recipeId;
@@ -72,5 +95,41 @@ public class RecipeEntity extends BaseEntity{
 
     public void setServings(Integer servings) {
         this.servings = servings;
+    }
+
+    public CategoryEntity getCategory() {
+        return category;
+    }
+
+    public void setCategory(CategoryEntity category) {
+        this.category = category;
+    }
+
+    public RecipeImageEntity getRecipeImage() {
+        return recipeImage;
+    }
+
+    public void setRecipeImage(RecipeImageEntity recipeImage) {
+        this.recipeImage = recipeImage;
+
+        if (recipeImage != null && recipeImage.getRecipe() != this) {
+            recipeImage.setRecipe(this);
+        }
+    }
+
+    public UserProfileEntity getUser() {
+        return user;
+    }
+
+    public void setUser(UserProfileEntity user) {
+        this.user = user;
+    }
+
+    public List<RecipeIngredientEntity> getIngredients() {
+        return ingredients;
+    }
+
+    public void setIngredients(List<RecipeIngredientEntity> ingredients) {
+        this.ingredients = ingredients;
     }
 }
