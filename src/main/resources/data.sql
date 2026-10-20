@@ -252,3 +252,52 @@ VALUES
         CURRENT_TIMESTAMP,
         CURRENT_TIMESTAMP
     );
+
+INSERT INTO favorites (
+    user_id,
+    recipe_id,
+    created_at,
+    updated_at
+)
+VALUES
+    (
+        (SELECT user_id FROM user_profiles
+         WHERE username = 'jan_kok'),
+        (SELECT recipe_id FROM recipes
+         WHERE title = 'Spaghetti Bolognese'),
+        CURRENT_TIMESTAMP,
+        CURRENT_TIMESTAMP
+    ),
+    (
+        (SELECT user_id FROM user_profiles
+         WHERE username = 'jan_kok'),
+        (SELECT recipe_id FROM recipes
+         WHERE title = 'Pannenkoeken'),
+        CURRENT_TIMESTAMP,
+        CURRENT_TIMESTAMP
+    ),
+    (
+        (SELECT user_id FROM user_profiles
+         WHERE username = 'jan_kok'),
+        (SELECT recipe_id FROM recipes
+         WHERE title = 'Caesarsalade'),
+        CURRENT_TIMESTAMP,
+        CURRENT_TIMESTAMP
+    ),
+    (
+        (SELECT user_id FROM user_profiles
+         WHERE username = 'jan_kok'),
+        (SELECT recipe_id FROM recipes
+         WHERE title = 'Tomatensoep'),
+        CURRENT_TIMESTAMP,
+        CURRENT_TIMESTAMP
+    ),
+    (
+        (SELECT user_id FROM user_profiles
+         WHERE username = 'jan_kok'),
+        (SELECT recipe_id FROM recipes
+         WHERE title = 'Gebakken zalm met groenten'),
+        CURRENT_TIMESTAMP,
+        CURRENT_TIMESTAMP
+    );
+
