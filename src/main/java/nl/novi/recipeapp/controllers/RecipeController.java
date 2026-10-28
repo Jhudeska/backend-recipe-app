@@ -4,6 +4,7 @@ package nl.novi.recipeapp.controllers;
 import jakarta.validation.Valid;
 import nl.novi.recipeapp.dtos.recipe.RecipeRequestDto;
 import nl.novi.recipeapp.dtos.recipe.RecipeResponseDto;
+import nl.novi.recipeapp.services.RecipeSearchService;
 import nl.novi.recipeapp.services.RecipeService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,9 +17,11 @@ import java.util.List;
 public class RecipeController {
 
     private final RecipeService recipeService;
+    private final RecipeSearchService recipeSearchService;
 
-    public RecipeController(RecipeService recipeService) {
+    public RecipeController(RecipeService recipeService, RecipeSearchService recipeSearchService) {
         this.recipeService = recipeService;
+        this.recipeSearchService = recipeSearchService;
     }
 
     @GetMapping
@@ -31,6 +34,15 @@ public class RecipeController {
     public ResponseEntity<RecipeResponseDto> getRecipeById(@PathVariable Long id) {
         return ResponseEntity
                 .ok(recipeService.getRecipeById(id));
+    }
+
+    @GetMapping("/search")
+    public ResponseEntity<List<RecipeResponseDto>> searchRecipes(
+            @RequestParam String query
+    ) {
+        return ResponseEntity.ok(
+                recipeSearchService.searchRecipes(query)
+        );
     }
 
     @PostMapping
