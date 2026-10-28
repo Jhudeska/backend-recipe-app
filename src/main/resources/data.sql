@@ -1,3 +1,41 @@
+INSERT INTO categories (name, description, created_at, updated_at)
+VALUES
+    ('Ontbijt', 'Recepten voor het ontbijt', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+    ('Lunch', 'Recepten voor de lunch', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+    ('Diner', 'Recepten voor het avondeten', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+    ('Vegetarisch', 'Recepten zonder vlees of vis', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+    ('Dessert', 'Zoete gerechten en nagerechten', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
+
+
+INSERT INTO user_profiles
+(username, email, password, password_reset_token,
+ profile_photo_url, bio, created_at, updated_at)
+VALUES
+    ('jan_kok', 'jan@receta.com', '',
+     NULL, 'https://receta.com/photos/jan.jpg',
+     'Ik hou van koken en nieuwe recepten ontdekken.',
+     CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+
+    ('sara_food', 'sara@receta.com', '',
+     NULL, 'https://receta.com/photos/sara.jpg',
+     'Liefhebber van gezonde en vegetarische gerechten.',
+     CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+
+    ('peter_chef', 'peter@receta.com', '',
+     NULL, NULL,
+     'Ik experimenteer graag met nieuwe smaken.',
+     CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+
+    ('lisa_bakt', 'lisa@receta.com', '',
+     NULL, 'https://receta.com/photos/lisa.jpg',
+     'Mijn passie is bakken en desserts maken.',
+     CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+
+    ('tom_foodie', 'tom@receta.com', '',
+     NULL, NULL,
+     'Ik deel graag mijn favoriete recepten.',
+     CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
+
 INSERT INTO recipes (
     title,
     description,
@@ -128,53 +166,6 @@ VALUES
         CURRENT_TIMESTAMP
     );
 
-INSERT INTO categories (name, description, created_at, updated_at)
-VALUES
-    ('Ontbijt', 'Recepten voor het ontbijt', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
-    ('Lunch', 'Recepten voor de lunch', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
-    ('Diner', 'Recepten voor het avondeten', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
-    ('Vegetarisch', 'Recepten zonder vlees of vis', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
-    ('Dessert', 'Zoete gerechten en nagerechten', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
-
-INSERT INTO user_profiles
-(username, email, password, password_reset_token,
- profile_photo_url, bio, created_at, updated_at)
-VALUES
-    ('jan_kok', 'jan@receta.com', '',
-     NULL, 'https://receta.com/photos/jan.jpg',
-     'Ik hou van koken en nieuwe recepten ontdekken.',
-     CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
-
-    ('sara_food', 'sara@receta.com', '',
-     NULL, 'https://receta.com/photos/sara.jpg',
-     'Liefhebber van gezonde en vegetarische gerechten.',
-     CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
-
-    ('peter_chef', 'peter@receta.com', '',
-     NULL, NULL,
-     'Ik experimenteer graag met nieuwe smaken.',
-     CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
-
-    ('lisa_bakt', 'lisa@receta.com', '',
-     NULL, 'https://receta.com/photos/lisa.jpg',
-     'Mijn passie is bakken en desserts maken.',
-     CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
-
-    ('tom_foodie', 'tom@receta.com', '',
-     NULL, NULL,
-     'Ik deel graag mijn favoriete recepten.',
-     CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
-
-
-INSERT INTO review_ratings
-    (comment, ratingscore, user_id, recipe_id, created_at, updated_at)
-VALUES
-    ('Heerlijk recept, makkelijk te bereiden!', 5, 1, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
-    ('Lekker van smaak, ik maak dit zeker opnieuw.', 4, 1, 2, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
-    ('Goed recept, maar de bereiding duurde wat langer.', 3, 2, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
-    ('Heel lekker en duidelijke instructies.', 5, 2, 3, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
-    ('Prima recept, maar er mocht wat meer kruiden in.', 4, 3, 2, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
-
 INSERT INTO recipe_images
 (recipe_id, image_url, created_at, updated_at)
 VALUES
@@ -219,6 +210,7 @@ VALUES
         CURRENT_TIMESTAMP
     );
 
+
 INSERT INTO user_profile_roles
 (user_id, role, created_at, updated_at)
 VALUES
@@ -252,6 +244,18 @@ VALUES
         CURRENT_TIMESTAMP,
         CURRENT_TIMESTAMP
     );
+
+
+
+
+INSERT INTO review_ratings
+(comment, ratingscore, user_id, recipe_id, created_at, updated_at)
+VALUES
+    ('Heerlijk recept, makkelijk te bereiden!', 5, 1, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+    ('Lekker van smaak, ik maak dit zeker opnieuw.', 4, 1, 2, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+    ('Goed recept, maar de bereiding duurde wat langer.', 3, 2, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+    ('Heel lekker en duidelijke instructies.', 5, 2, 3, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+    ('Prima recept, maar er mocht wat meer kruiden in.', 4, 3, 2, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
 
 INSERT INTO favorites (
     user_id,
