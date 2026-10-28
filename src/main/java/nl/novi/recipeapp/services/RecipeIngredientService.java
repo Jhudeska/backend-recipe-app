@@ -66,11 +66,23 @@ public class RecipeIngredientService {
     }
 
 
+
+    @Transactional
     public RecipeIngredientResponseDto createRecipeIngredient(
             RecipeIngredientRequestDto requestDto) {
 
         Long recipeId = requestDto.recipeId();
         Long ingredientId = requestDto.ingredientId();
+
+        RecipeEntity recipe = recipeRepository.findById(recipeId)
+                .orElseThrow(() -> new IllegalArgumentException(
+                        "Recipe not found with ID: " + recipeId
+                ));
+
+        IngredientEntity ingredient = ingredientRepository.findById(ingredientId)
+                .orElseThrow(() -> new IllegalArgumentException(
+                        "Ingredient not found with ID: " + ingredientId
+                ));
 
         if (recipeIngredientRepository
                 .existsByRecipe_RecipeIdAndIngredient_IngredientId(
@@ -81,29 +93,20 @@ public class RecipeIngredientService {
             );
         }
 
-        RecipeEntity recipe = recipeRepository.findById(recipeId)
-                .orElseThrow(() -> new RuntimeException(
-                        "Recipe not found with ID: " + recipeId
-                ));
-
-        IngredientEntity ingredient =
-                ingredientRepository.findById(ingredientId)
-                        .orElseThrow(() -> new RuntimeException(
-                                "Ingredient not found with ID: " + ingredientId
-                        ));
-
         RecipeIngredientEntity recipeIngredient =
                 new RecipeIngredientEntity();
 
         recipeIngredient.setRecipe(recipe);
         recipeIngredient.setIngredient(ingredient);
         recipeIngredient.setQuantity(requestDto.quantity());
-        recipeIngredient.setUnit(requestDto.unit());
+        recipeIngredient.setUnit(normalizeUnit(requestDto.unit()));
 
-        RecipeIngredientEntity savedRecipeIngredient = recipeIngredientRepository.save(recipeIngredient);
+        RecipeIngredientEntity savedRecipeIngredient =
+                recipeIngredientRepository.save(recipeIngredient);
 
         return recipeIngredientMapper.toResponseDto(savedRecipeIngredient);
     }
+
 
 
     public RecipeIngredientResponseDto updateRecipeIngredient(Long id, @Valid RecipeIngredientRequestDto requestDto) {

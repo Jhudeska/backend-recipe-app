@@ -3,13 +3,13 @@ package nl.novi.recipeapp.services;
 import jakarta.transaction.Transactional;
 import nl.novi.recipeapp.dtos.recipe.RecipeRequestDto;
 import nl.novi.recipeapp.dtos.recipe.RecipeResponseDto;
+import nl.novi.recipeapp.dtos.recipeingredient.RecipeIngredientRequestDto;
 import nl.novi.recipeapp.entities.CategoryEntity;
+import nl.novi.recipeapp.entities.IngredientEntity;
 import nl.novi.recipeapp.entities.RecipeEntity;
+import nl.novi.recipeapp.entities.RecipeIngredientEntity;
 import nl.novi.recipeapp.mappers.RecipeMapper;
-import nl.novi.recipeapp.repositories.CategoryRepository;
-import nl.novi.recipeapp.repositories.RecipeImageRepository;
-import nl.novi.recipeapp.repositories.RecipeIngredientRepository;
-import nl.novi.recipeapp.repositories.RecipeRepository;
+import nl.novi.recipeapp.repositories.*;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -22,13 +22,15 @@ public class RecipeService {
     private final CategoryRepository categoryRepository;
     private final RecipeImageRepository recipeImageRepository;
     private final RecipeIngredientRepository recipeIngredientRepository;
+    private final IngredientRepository ingredientRepository;
     private final RecipeMapper recipeMapper;
 
-    public RecipeService(RecipeRepository recipeRepository, CategoryRepository categoryRepository, RecipeImageRepository recipeImageRepository, RecipeIngredientRepository recipeIngredientRepository, RecipeMapper recipeMapper) {
+    public RecipeService(RecipeRepository recipeRepository, CategoryRepository categoryRepository, RecipeImageRepository recipeImageRepository, RecipeIngredientRepository recipeIngredientRepository, IngredientRepository ingredientRepository, RecipeMapper recipeMapper) {
         this.recipeRepository = recipeRepository;
         this.categoryRepository = categoryRepository;
         this.recipeImageRepository = recipeImageRepository;
         this.recipeIngredientRepository = recipeIngredientRepository;
+        this.ingredientRepository = ingredientRepository;
         this.recipeMapper = recipeMapper;
     }
 
@@ -62,6 +64,7 @@ public class RecipeService {
 
         RecipeEntity savedRecipe =  recipeRepository.save(recipe);
         return recipeMapper.toResponseDto(savedRecipe);
+
     }
 
     public RecipeResponseDto updateRecipe(Long id, RecipeRequestDto recipeRequestDto) {
@@ -118,4 +121,33 @@ public class RecipeService {
                 );
     }
 
+    private void saveRecipeIngredients(
+            RecipeEntity recipe,
+            List<RecipeIngredientRequestDto> ingredients
+    ) {
+        if (ingredients == null) {
+            return;
+        }
+
+        for (RecipeIngredientRequestDto ingredientDto : ingredients) {
+            IngredientEntity ingredient = ingredientRepository
+                    .findById(ingredientDto.ingredientId())
+                    .orElseThrow(() ->
+                            new RuntimeException(
+                                    "Ingrediënt niet gevonden met ID: "
+                                            + ingredientDto.ingredientId()
+                            )
+                    );
+
+            RecipeIngredientEntity recipeIngredient =
+                    new RecipeIngredientEntity();
+
+            recipeIngredient.setRecipe(recipe);
+            recipeIngredient.setIngredient(ingredient);
+            recipeIngredient.setQuantity(ingredientDto.quantity());
+            recipeIngredient.setUnit(ingredientDto.unit());
+
+            recipeIngredientRepository.save(recipeIngredient);
+        }
+    }
 }
