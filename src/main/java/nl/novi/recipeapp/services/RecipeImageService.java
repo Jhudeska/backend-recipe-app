@@ -40,16 +40,10 @@ public class RecipeImageService {
         return recipeImageMapper.toResponseDto(findRecipeImageById(id));
     }
 
+
+    @Transactional
     public RecipeImageResponseDto createRecipeImage(
             RecipeImageRequestDto requestDto) {
-
-        if (recipeImageRepository.existsByRecipe_RecipeId(
-                requestDto.recipeId())) {
-            throw new IllegalArgumentException(
-                    "An image already exists for recipe ID: "
-                            + requestDto.recipeId()
-            );
-        }
 
         RecipeEntity recipe = recipeRepository.findById(
                 requestDto.recipeId()
@@ -57,15 +51,33 @@ public class RecipeImageService {
                 "Recipe not found with ID: " + requestDto.recipeId()
         ));
 
+        RecipeImageEntity existingImage =
+                recipeImageRepository
+                        .findByRecipe_RecipeId(requestDto.recipeId())
+                        .orElse(null);
+
+        if (existingImage != null) {
+            existingImage.setImageUrl(
+                    requestDto.imageUrl().trim()
+            );
+
+            RecipeImageEntity savedImage =
+                    recipeImageRepository.save(existingImage);
+
+            return recipeImageMapper.toResponseDto(savedImage);
+        }
+
         RecipeImageEntity recipeImage = new RecipeImageEntity(
                 requestDto.imageUrl().trim(),
                 recipe
         );
 
-        RecipeImageEntity savedRecipeImage = recipeImageRepository.save(recipeImage);
+        RecipeImageEntity savedRecipeImage =
+                recipeImageRepository.save(recipeImage);
 
         return recipeImageMapper.toResponseDto(savedRecipeImage);
     }
+
 
     public RecipeImageResponseDto updateRecipeImage(
             Long id,

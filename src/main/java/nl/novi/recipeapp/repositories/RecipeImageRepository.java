@@ -8,7 +8,8 @@ import java.util.Optional;
 
 @Repository
 public interface RecipeImageRepository  extends JpaRepository<RecipeImageEntity, Long> {
-    Optional<RecipeImageEntity> findByRecipe_RecipeId(Long recipeId);
 
     boolean existsByRecipe_RecipeId(Long recipeId);
+
+    Optional<RecipeImageEntity> findByRecipe_RecipeId(Long recipeId);
 }
