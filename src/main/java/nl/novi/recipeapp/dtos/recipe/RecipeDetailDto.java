@@ -1,5 +1,10 @@
 package nl.novi.recipeapp.dtos.recipe;
 
+import nl.novi.recipeapp.dtos.recipeingredient.RecipeIngredientDto;
+import nl.novi.recipeapp.entities.RecipeEntity;
+
+import java.util.List;
+
 public record RecipeDetailDto(
         Long recipeId,
         String title,
@@ -7,6 +12,19 @@ public record RecipeDetailDto(
         String instructions,
         Integer preparationTime,
         Integer servings,
+
         Long categoryId,
-        Long userId
+        String categoryName,
+
+        Long userId,
+
+        String imageUrl,
+
+        List<RecipeIngredientDto> ingredients,
+
+        Double averageRating,
+        Long reviewCount
 ) { }
+
+
+
