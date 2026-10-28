@@ -6,11 +6,11 @@ import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 @Configuration
-public class CorsConfig {
+public class GlobalCorsConfiguration {
 
     @Bean
     public WebMvcConfigurer corsConfigurer() {
-// Deze browser-origin mag met mijn API (backend-splash) communiceren.
+// Deze browser-origin mag met mijn API (backend-recipe-app) communiceren.
 
         return new WebMvcConfigurer() {
 
@@ -18,8 +18,9 @@ public class CorsConfig {
             public void addCorsMappings(CorsRegistry registry) {
 
                 registry.addMapping("/**")
-                        .allowedOrigins("http://localhost:5173")
-                        .allowedMethods("GET", "POST", "PUT", "DELETE")
+                        .allowedOrigins("*")
+//                        .allowedOrigins("http://localhost:5173")
+                        .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH")
                         .allowedHeaders("*");
             }
         };
