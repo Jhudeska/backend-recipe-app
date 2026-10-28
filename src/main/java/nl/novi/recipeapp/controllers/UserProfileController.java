@@ -8,6 +8,7 @@ import nl.novi.recipeapp.entities.UserProfileEntity;
 import nl.novi.recipeapp.services.UserProfileService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -31,6 +32,7 @@ public class UserProfileController {
     }
 
     @GetMapping("/{id}")
+//    @PreAuthorize("@securityHelper.isOwner(authentication.principal, #username || hasrole('ADMIN'))")
     public ResponseEntity<UserProfileResponseDto> getUserProfileById(
             @PathVariable Long id) {
         return ResponseEntity.ok(
