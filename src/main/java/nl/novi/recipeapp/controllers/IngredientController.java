@@ -3,7 +3,6 @@ package nl.novi.recipeapp.controllers;
 import jakarta.validation.Valid;
 import nl.novi.recipeapp.dtos.ingredient.IngredientRequestDto;
 import nl.novi.recipeapp.dtos.ingredient.IngredientResponseDto;
-import nl.novi.recipeapp.entities.IngredientEntity;
 import nl.novi.recipeapp.services.IngredientService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
