@@ -4,6 +4,8 @@ import nl.novi.recipeapp.dtos.recipeimage.RecipeImageRequestDto;
 import nl.novi.recipeapp.dtos.recipeimage.RecipeImageResponseDto;
 import nl.novi.recipeapp.entities.RecipeEntity;
 import nl.novi.recipeapp.entities.RecipeImageEntity;
+import nl.novi.recipeapp.exceptions.ResourceAlreadyExistsException;
+import nl.novi.recipeapp.exceptions.ResourceNotFoundException;
 import nl.novi.recipeapp.mappers.RecipeImageMapper;
 import nl.novi.recipeapp.repositories.RecipeImageRepository;
 import nl.novi.recipeapp.repositories.RecipeRepository;
@@ -47,7 +49,7 @@ public class RecipeImageService {
 
         RecipeEntity recipe = recipeRepository.findById(
                 requestDto.recipeId()
-        ).orElseThrow(() -> new RuntimeException(
+        ).orElseThrow(() -> new ResourceNotFoundException(
                 "Recipe not found with ID: " + requestDto.recipeId()
         ));
 
@@ -88,7 +90,7 @@ public class RecipeImageService {
 
         RecipeEntity recipe = recipeRepository.findById(
                 requestDto.recipeId()
-        ).orElseThrow(() -> new RuntimeException(
+        ).orElseThrow(() -> new ResourceNotFoundException(
                 "Recipe not found with ID: " + requestDto.recipeId()
         ));
 
@@ -97,7 +99,7 @@ public class RecipeImageService {
 
         if (recipeChanged && recipeImageRepository.existsByRecipe_RecipeId(
                 requestDto.recipeId())) {
-            throw new IllegalArgumentException(
+            throw new ResourceAlreadyExistsException(
                     "An image already exists for recipe ID: "
                             + requestDto.recipeId()
             );
@@ -121,7 +123,7 @@ public class RecipeImageService {
     private RecipeImageEntity findRecipeImageById(Long id) {
 
         return recipeImageRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException(
+                .orElseThrow(() -> new ResourceNotFoundException(
                         "Recipe image not found with ID: " + id
                 ));
     }

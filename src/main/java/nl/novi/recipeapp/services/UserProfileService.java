@@ -4,6 +4,8 @@ import nl.novi.recipeapp.dtos.userprofile.UserProfileRequestDto;
 import nl.novi.recipeapp.dtos.userprofile.UserProfileResponseDto;
 import nl.novi.recipeapp.dtos.userprofile.UserProfileUpdateDto;
 import nl.novi.recipeapp.entities.UserProfileEntity;
+import nl.novi.recipeapp.exceptions.ResourceAlreadyExistsException;
+import nl.novi.recipeapp.exceptions.ResourceNotFoundException;
 import nl.novi.recipeapp.mappers.UserProfileMapper;
 import nl.novi.recipeapp.repositories.UserProfileRepository;
 import org.springframework.stereotype.Service;
@@ -42,13 +44,13 @@ public class UserProfileService {
         String email = requestDto.email().trim().toLowerCase();
 
         if (userProfileRepository.existsByUsernameIgnoreCase(username)) {
-            throw new IllegalArgumentException(
+            throw new ResourceAlreadyExistsException(
                     "Username already exists: " + username
             );
         }
 
         if (userProfileRepository.existsByEmailIgnoreCase(email)) {
-            throw new IllegalArgumentException(
+            throw new ResourceAlreadyExistsException(
                     "Email already exists: " + email
             );
         }
@@ -78,14 +80,14 @@ public class UserProfileService {
 
         if (usernameChanged
                 && userProfileRepository.existsByUsernameIgnoreCase(username)) {
-            throw new IllegalArgumentException(
+            throw new ResourceAlreadyExistsException(
                     "Username already exists: " + username
             );
         }
 
         if (emailChanged
                 && userProfileRepository.existsByEmailIgnoreCase(email)) {
-            throw new IllegalArgumentException(
+            throw new ResourceAlreadyExistsException(
                     "Email already exists: " + email
             );
         }
@@ -116,7 +118,7 @@ public class UserProfileService {
     private UserProfileEntity findUserProfileById(Long id) {
 
         return userProfileRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException(
+                .orElseThrow(() -> new ResourceNotFoundException(
                         "User profile not found with ID: " + id
                 ));
     }

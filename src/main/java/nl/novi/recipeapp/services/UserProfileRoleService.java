@@ -4,6 +4,8 @@ import nl.novi.recipeapp.dtos.userprofilerole.UserProfileRoleRequestDto;
 import nl.novi.recipeapp.dtos.userprofilerole.UserProfileRoleResponseDto;
 import nl.novi.recipeapp.entities.UserProfileEntity;
 import nl.novi.recipeapp.entities.UserProfileRoleEntity;
+import nl.novi.recipeapp.exceptions.ResourceAlreadyExistsException;
+import nl.novi.recipeapp.exceptions.ResourceNotFoundException;
 import nl.novi.recipeapp.mappers.UserProfileRoleMapper;
 import nl.novi.recipeapp.repositories.UserProfileRepository;
 import nl.novi.recipeapp.repositories.UserProfileRoleRepository;
@@ -44,14 +46,14 @@ public class UserProfileRoleService {
 
         UserProfileEntity userProfile =
                 userProfileRepository.findById(requestDto.userId())
-                        .orElseThrow(() -> new RuntimeException(
+                        .orElseThrow(() -> new ResourceNotFoundException(
                                 "User not found with ID: "
                                         + requestDto.userId()
                         ));
 
         if (userRoleRepository.existsByUserProfile_UserIdAndRole(
                 requestDto.userId(), requestDto.role())) {
-            throw new IllegalArgumentException(
+            throw new ResourceAlreadyExistsException(
                     "This user already has the role: "
                             + requestDto.role()
             );
@@ -75,7 +77,7 @@ public class UserProfileRoleService {
 
         UserProfileEntity userProfile =
                 userProfileRepository.findById(requestDto.userId())
-                        .orElseThrow(() -> new RuntimeException(
+                        .orElseThrow(() -> new ResourceNotFoundException(
                                 "User not found with ID: "
                                         + requestDto.userId()
                         ));
@@ -88,7 +90,7 @@ public class UserProfileRoleService {
         if (roleChanged
                 && userRoleRepository.existsByUserProfile_UserIdAndRole(
                 requestDto.userId(), requestDto.role())) {
-            throw new IllegalArgumentException(
+            throw new ResourceAlreadyExistsException(
                     "This user already has the role: "
                             + requestDto.role()
             );
@@ -109,7 +111,7 @@ public class UserProfileRoleService {
     private UserProfileRoleEntity findUserRoleById(Long id) {
 
         return userRoleRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException(
+                .orElseThrow(() -> new ResourceNotFoundException(
                         "User role not found with ID: " + id
                 ));
     }

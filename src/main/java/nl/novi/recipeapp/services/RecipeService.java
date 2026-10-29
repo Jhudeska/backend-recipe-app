@@ -11,6 +11,7 @@ import nl.novi.recipeapp.entities.RecipeIngredientEntity;
 import nl.novi.recipeapp.mappers.RecipeMapper;
 import nl.novi.recipeapp.repositories.*;
 import org.springframework.stereotype.Service;
+import nl.novi.recipeapp.exceptions.ResourceNotFoundException;
 
 import java.util.List;
 
@@ -50,7 +51,7 @@ public class RecipeService {
         CategoryEntity category = categoryRepository
                 .findById(recipeRequestDto.categoryId())
                 .orElseThrow(() ->
-                        new RuntimeException(
+                        new ResourceNotFoundException(
                                 "Categorie niet gevonden met ID: "
                                         + recipeRequestDto.categoryId()
                         )
@@ -74,7 +75,7 @@ public class RecipeService {
         CategoryEntity category = categoryRepository
                 .findById(recipeRequestDto.categoryId())
                 .orElseThrow(() ->
-                        new RuntimeException(
+                        new ResourceNotFoundException(
                                 "Categorie niet gevonden met ID: "
                                         + recipeRequestDto.categoryId()
                         )
@@ -115,7 +116,7 @@ public class RecipeService {
     private RecipeEntity findRecipeById(Long id) {
         return recipeRepository.findById(id)
                 .orElseThrow(() ->
-                        new RuntimeException(
+                        new ResourceNotFoundException(
                                 "Recept niet gevonden met ID: " + id
                         )
                 );
@@ -133,7 +134,7 @@ public class RecipeService {
             IngredientEntity ingredient = ingredientRepository
                     .findById(ingredientDto.ingredientId())
                     .orElseThrow(() ->
-                            new RuntimeException(
+                            new ResourceNotFoundException(
                                     "Ingrediënt niet gevonden met ID: "
                                             + ingredientDto.ingredientId()
                             )

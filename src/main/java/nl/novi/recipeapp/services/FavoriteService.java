@@ -1,5 +1,7 @@
 package nl.novi.recipeapp.services;
 
+import nl.novi.recipeapp.exceptions.ResourceAlreadyExistsException;
+import nl.novi.recipeapp.exceptions.ResourceNotFoundException;
 import org.springframework.transaction.annotation.Transactional;
 import nl.novi.recipeapp.dtos.favorite.FavoriteRequestDto;
 import nl.novi.recipeapp.dtos.favorite.FavoriteResponseDto;
@@ -54,16 +56,16 @@ public class FavoriteService {
 
         if (favoriteRepository
                 .existsByUserProfile_UserIdAndRecipe_RecipeId(userId, recipeId)) {
-            throw new RuntimeException(
+            throw new ResourceAlreadyExistsException(
                     "Recipe is already a favorite for user id: " + userId);
         }
 
         UserProfileEntity userProfile = userProfileRepository.findById(userId)
-                .orElseThrow(() -> new RuntimeException(
+                .orElseThrow(() -> new ResourceNotFoundException(
                         "User not found with id: " + userId));
 
         RecipeEntity recipe = recipeRepository.findById(recipeId)
-                .orElseThrow(() -> new RuntimeException(
+                .orElseThrow(() -> new ResourceNotFoundException(
                         "Recipe not found with id: " + recipeId));
 
         FavoriteEntity favorite = new FavoriteEntity();
@@ -88,7 +90,7 @@ public class FavoriteService {
                         userId,
                         recipeId
                 )
-                .orElseThrow(() -> new RuntimeException(
+                .orElseThrow(() -> new ResourceNotFoundException(
                         "Favorite not found for user id: " + userId
                                 + " and recipe id: " + recipeId
                 ));
