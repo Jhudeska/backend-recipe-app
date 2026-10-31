@@ -11,14 +11,10 @@ public class RecipeIngredientMapper {
     public RecipeIngredientResponseDto toResponseDto(RecipeIngredientEntity recipeIngredient) {
 
         return new RecipeIngredientResponseDto(
-                recipeIngredient.getRecipeIngredientId(),
-                recipeIngredient.getRecipe().getRecipeId(),
                 recipeIngredient.getIngredient().getIngredientId(),
                 recipeIngredient.getIngredient().getName(),
                 recipeIngredient.getQuantity(),
-                recipeIngredient.getUnit(),
-                recipeIngredient.getCreated_at(),
-                recipeIngredient.getUpdated_at()
+                recipeIngredient.getUnit()
         );
     }
 }

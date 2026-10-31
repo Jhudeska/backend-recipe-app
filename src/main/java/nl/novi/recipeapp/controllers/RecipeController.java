@@ -2,8 +2,11 @@ package nl.novi.recipeapp.controllers;
 
 
 import jakarta.validation.Valid;
+import nl.novi.recipeapp.dtos.recipe.RecipeFormRequestDto;
+import nl.novi.recipeapp.dtos.recipe.RecipeFormResponseDto;
 import nl.novi.recipeapp.dtos.recipe.RecipeRequestDto;
 import nl.novi.recipeapp.dtos.recipe.RecipeResponseDto;
+import nl.novi.recipeapp.services.RecipeFormService;
 import nl.novi.recipeapp.services.RecipeSearchService;
 import nl.novi.recipeapp.services.RecipeService;
 import org.springframework.http.HttpStatus;
@@ -18,10 +21,12 @@ public class RecipeController {
 
     private final RecipeService recipeService;
     private final RecipeSearchService recipeSearchService;
+    private final RecipeFormService recipeFormService;
 
-    public RecipeController(RecipeService recipeService, RecipeSearchService recipeSearchService) {
+    public RecipeController(RecipeService recipeService, RecipeSearchService recipeSearchService, RecipeFormService recipeFormService) {
         this.recipeService = recipeService;
         this.recipeSearchService = recipeSearchService;
+        this.recipeFormService = recipeFormService;
     }
 
     @GetMapping
@@ -45,10 +50,20 @@ public class RecipeController {
         );
     }
 
+    @GetMapping("/form_data")
+    public ResponseEntity<RecipeFormResponseDto> getRecipeFormData() {
+        return ResponseEntity.ok(
+                recipeFormService.getRecipeFormData()
+        );
+    }
+
     @PostMapping
-    public ResponseEntity<RecipeResponseDto> createRecipe(@Valid @RequestBody RecipeRequestDto recipeRequestDto){
+    public ResponseEntity<RecipeResponseDto> createRecipe(
+            @Valid @RequestBody RecipeFormRequestDto requestDto
+    ) {
+
         RecipeResponseDto newRecipe =
-                recipeService.createRecipe(recipeRequestDto);
+                recipeService.createRecipe(requestDto);
 
         return ResponseEntity
                 .status(HttpStatus.CREATED)
@@ -58,11 +73,13 @@ public class RecipeController {
     @PutMapping("/{id}")
     public ResponseEntity<RecipeResponseDto> updateRecipe(
             @PathVariable Long id,
-            @Valid @RequestBody RecipeRequestDto recipeRequestDto){
-        RecipeResponseDto updatedRecipe = recipeService.updateRecipe(id, recipeRequestDto);
+            @Valid @RequestBody RecipeFormRequestDto requestDto
+    ) {
 
-        return ResponseEntity
-                .ok(updatedRecipe);
+        RecipeResponseDto updatedRecipe =
+                recipeService.updateRecipe(id, requestDto);
+
+        return ResponseEntity.ok(updatedRecipe);
     }
 
     @DeleteMapping("/{id}")

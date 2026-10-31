@@ -11,8 +11,7 @@ public class CategoryMapper {
 
         return new CategoryResponseDto(
                 category.getCategoryId(),
-                category.getName(),
-                category.getDescription()
+                category.getName()
         );
     }
 
