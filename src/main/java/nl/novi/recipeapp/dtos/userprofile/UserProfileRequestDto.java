@@ -15,10 +15,6 @@ public record UserProfileRequestDto(
         @Size(max = 255, message = "Email cannot exceed 255 characters")
         String email,
 
-        @NotBlank(message = "Password is required")
-        @Size(min = 8, message = "Password must contain at least 8 characters")
-        String password,
-
         String profilePhotoUrl,
 
         String bio
