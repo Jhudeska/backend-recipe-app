@@ -1,6 +1,9 @@
 package nl.novi.recipeapp.entities;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 import nl.novi.recipeapp.enums.Role;
 
 import java.util.ArrayList;
@@ -14,17 +17,14 @@ public class UserProfileEntity extends BaseEntity {
     @Column(name = "user_id")
     private Long userId;
 
+    @Column(name = "keycloak_id", unique = true)
+    private String keycloakId;
+
     @Column(name = "username", nullable = false, unique = true, length = 100)
     private String username;
 
     @Column(name = "email", nullable = false, unique = true, length = 255)
     private String email;
-
-    @Column(name = "password", nullable = false)
-    private String password;
-
-    @Column(name = "password_reset_token")
-    private String passwordResetToken;
 
     @Column(name = "profile_photo_url")
     private String profilePhotoUrl;
@@ -45,21 +45,17 @@ public class UserProfileEntity extends BaseEntity {
     @OneToMany(mappedBy = "userProfile")
     private List<FavoriteEntity> favorites = new ArrayList<>();
 
-
-    public UserProfileEntity() {
+    // lege constructor nodig voor JPA
+    protected UserProfileEntity() {
     }
 
     public UserProfileEntity(
             String username,
             String email,
-            String password,
-            String passwordResetToken,
             String profilePhotoUrl,
             String bio) {
         this.username = username;
         this.email = email;
-        this.password = password;
-        this.passwordResetToken = passwordResetToken;
         this.profilePhotoUrl = profilePhotoUrl;
         this.bio = bio;
     }
@@ -86,22 +82,6 @@ public class UserProfileEntity extends BaseEntity {
 
     public void setEmail(String email) {
         this.email = email;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public String getPasswordResetToken() {
-        return passwordResetToken;
-    }
-
-    public void setPasswordResetToken(String passwordResetToken) {
-        this.passwordResetToken = passwordResetToken;
     }
 
     public String getProfilePhotoUrl() {
@@ -147,8 +127,16 @@ public class UserProfileEntity extends BaseEntity {
         roles.add(userRole);
     }
 
-//    public void removeRole(UserProfileRoleEntity role) {
-//        roles.remove(role);
-//        role.setUserProfile(null);
-//    }
+    public String getKeycloakId() {
+        return keycloakId;
+    }
+
+    public void setKeycloakId(String keycloakId) {
+        this.keycloakId = keycloakId;
+    }
+
+    public List<FavoriteEntity> getFavorites() {
+        return favorites;
+    }
+
 }
