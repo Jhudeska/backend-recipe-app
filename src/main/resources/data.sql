@@ -166,7 +166,7 @@ VALUES
         (SELECT recipe_id
          FROM recipes
          WHERE title = 'Spaghetti Bolognese'),
-        'https://receta.com/photos/spaghetti-bolognese.jpg',
+        'https://www.leukerecepten.nl/app/uploads/2025/07/spaghetti-bolognese_2.jpg',
         CURRENT_TIMESTAMP,
         CURRENT_TIMESTAMP
     ),
@@ -174,7 +174,7 @@ VALUES
         (SELECT recipe_id
          FROM recipes
          WHERE title = 'Pannenkoeken'),
-        'https://receta.com/photos/pancakes.jpg',
+        'https://uitdekeukenvanfatima.nl/wp-content/uploads/2018/01/IMG_2824-2-1.jpg',
         CURRENT_TIMESTAMP,
         CURRENT_TIMESTAMP
     ),
@@ -182,7 +182,7 @@ VALUES
         (SELECT recipe_id
          FROM recipes
          WHERE title = 'Caesarsalade'),
-        'https://receta.com/photos/caesar-salad.jpg',
+        'https://www.leukerecepten.nl/app/uploads/2025/06/caesar-salade_.jpg',
         CURRENT_TIMESTAMP,
         CURRENT_TIMESTAMP
     ),
