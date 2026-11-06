@@ -115,6 +115,22 @@ public class RecipeImageService {
         return recipeImageMapper.toResponseDto(savedRecipeImage);
     }
 
+    @Transactional
+    public RecipeImageResponseDto updateRecipeImageUrl(
+            Long id,
+            String imageUrl) {
+
+        RecipeImageEntity existingRecipeImage =
+                findRecipeImageById(id);
+
+        existingRecipeImage.setImageUrl(imageUrl.trim());
+
+        RecipeImageEntity savedRecipeImage =
+                recipeImageRepository.save(existingRecipeImage);
+
+        return recipeImageMapper.toResponseDto(savedRecipeImage);
+    }
+
     public void deleteRecipeImage(Long id) {
         RecipeImageEntity recipeImage = findRecipeImageById(id);
         recipeImageRepository.delete(recipeImage);

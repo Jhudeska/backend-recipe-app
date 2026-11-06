@@ -15,7 +15,7 @@ import nl.novi.recipeapp.mappers.RecipeMapper;
 import nl.novi.recipeapp.repositories.*;
 import org.springframework.stereotype.Service;
 import nl.novi.recipeapp.exceptions.ResourceNotFoundException;
-
+import nl.novi.recipeapp.repositories.ReviewRatingRepository;
 import java.util.List;
 
 @Service
@@ -28,14 +28,18 @@ public class RecipeService {
     private final RecipeIngredientRepository recipeIngredientRepository;
     private final IngredientRepository ingredientRepository;
     private final RecipeMapper recipeMapper;
+    private final FavoriteRepository favoriteRepository;
+    private final ReviewRatingRepository reviewRatingRepository;
 
-    public RecipeService(RecipeRepository recipeRepository, CategoryRepository categoryRepository, RecipeImageRepository recipeImageRepository, RecipeIngredientRepository recipeIngredientRepository, IngredientRepository ingredientRepository, RecipeMapper recipeMapper) {
+    public RecipeService(RecipeRepository recipeRepository, CategoryRepository categoryRepository, RecipeImageRepository recipeImageRepository, RecipeIngredientRepository recipeIngredientRepository, IngredientRepository ingredientRepository, RecipeMapper recipeMapper, FavoriteRepository favoriteRepository, ReviewRatingRepository reviewRatingRepository) {
         this.recipeRepository = recipeRepository;
         this.categoryRepository = categoryRepository;
         this.recipeImageRepository = recipeImageRepository;
         this.recipeIngredientRepository = recipeIngredientRepository;
         this.ingredientRepository = ingredientRepository;
         this.recipeMapper = recipeMapper;
+        this.favoriteRepository = favoriteRepository;
+        this.reviewRatingRepository = reviewRatingRepository;
     }
 
     public List<RecipeResponseDto> getAllRecipes() {
@@ -136,7 +140,13 @@ public class RecipeService {
 
         RecipeEntity existingRecipe = findRecipeById(id);
 
-        // Verwijder eerst de afbeelding.
+        // 1. Favorieten verwijderen
+        favoriteRepository.deleteByRecipe_RecipeId(id);
+
+        // 2. Reviews en ratings verwijderen
+        reviewRatingRepository.deleteByRecipe_RecipeId(id);
+
+        //3. Afbeelding verwijderen
         recipeImageRepository
                 .findByRecipe_RecipeId(id)
                 .ifPresent(image -> {
@@ -144,11 +154,11 @@ public class RecipeService {
                     recipeImageRepository.delete(image);
                 });;
 
-        // Verwijder daarna de koppelingen met ingrediënten.
+        //4. Ingrediëntkoppelingen verwijderen
         recipeIngredientRepository
                 .deleteByRecipe_RecipeId(id);
 
-        // Verwijder ten slotte het recept.
+        // 5. Verwijder ten slotte het recept.
         recipeRepository.delete(existingRecipe);
     }
 

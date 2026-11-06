@@ -50,6 +50,8 @@ public class FavoriteService {
         return favoriteMapper.toResponseDto(favorite);
     }
 
+
+    @Transactional
     public FavoriteResponseDto createFavorite(Long userId, FavoriteRequestDto requestDto) {
 
         Long recipeId = requestDto.recipeId();
@@ -83,6 +85,8 @@ public class FavoriteService {
         favoriteRepository.delete(existingFavorite);
     }
 
+
+
     private FavoriteEntity findFavorite(Long userId, Long recipeId) {
 
         return favoriteRepository
@@ -95,4 +99,16 @@ public class FavoriteService {
                                 + " and recipe id: " + recipeId
                 ));
     }
+
+
+    @Transactional(readOnly = true)
+    public UserProfileEntity getUserProfileByKeycloakId(
+            String keycloakId) {
+
+        return userProfileRepository.findByKeycloakId(keycloakId)
+                .orElseThrow(() -> new ResourceNotFoundException(
+                        "User not found"
+                ));
+    }
+
 }
