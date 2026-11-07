@@ -6,6 +6,7 @@ import nl.novi.recipeapp.dtos.reviewrating.ReviewRatingResponseDto;
 import nl.novi.recipeapp.entities.RecipeEntity;
 import nl.novi.recipeapp.entities.ReviewRatingEntity;
 import nl.novi.recipeapp.entities.UserProfileEntity;
+import nl.novi.recipeapp.exceptions.ResourceNotFoundException;
 import nl.novi.recipeapp.mappers.ReviewRatingMapper;
 import nl.novi.recipeapp.repositories.RecipeRepository;
 import nl.novi.recipeapp.repositories.ReviewRatingRepository;
@@ -53,13 +54,13 @@ public class ReviewRatingService {
             ReviewRatingRequestDto requestDto) {
 
         UserProfileEntity userProfile = userProfileRepository.findById(userId)
-                .orElseThrow(() -> new RuntimeException(
+                .orElseThrow(() -> new ResourceNotFoundException(
                         "Gebruiker niet gevonden met ID: " + userId
                 ));
 
         RecipeEntity recipe = recipeRepository.findById(
                 requestDto.recipeId()
-        ).orElseThrow(() -> new RuntimeException(
+        ).orElseThrow(() -> new ResourceNotFoundException(
                 "Recept niet gevonden met ID: " + requestDto.recipeId()
         ));
 
@@ -83,13 +84,13 @@ public class ReviewRatingService {
                 findReviewRatingById(id);
 
         UserProfileEntity userProfile = userProfileRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException(
+                .orElseThrow(() -> new ResourceNotFoundException(
                         "Gebruiker niet gevonden met ID: " + id
                 ));
 
         RecipeEntity recipe = recipeRepository.findById(
                 requestDto.recipeId()
-        ).orElseThrow(() -> new RuntimeException(
+        ).orElseThrow(() -> new ResourceNotFoundException(
                 "Recept niet gevonden met ID: " + requestDto.recipeId()
         ));
 
@@ -117,7 +118,7 @@ public class ReviewRatingService {
     private ReviewRatingEntity findReviewRatingById(Long id) {
 
         return reviewRatingRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException(
+                .orElseThrow(() -> new ResourceNotFoundException(
                         "Review niet gevonden met ID: " + id
                 ));
     }

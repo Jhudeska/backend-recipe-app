@@ -8,31 +8,24 @@ VALUES
 
 
 INSERT INTO user_profiles
-(username, email, password, password_reset_token,
- profile_photo_url, bio, created_at, updated_at)
+(keycloak_id, username, email, profile_photo_url, bio, created_at, updated_at)
 VALUES
-    ('jan_kok', 'jan@receta.com', '',
-     NULL, 'https://receta.com/photos/jan.jpg',
-     'Ik hou van koken en nieuwe recepten ontdekken.',
-     CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+    ('1f77a917-e396-4ac0-8ce6-a3354ce8c70b','jan_kok', 'jan@receta.com',  'https://plus.unsplash.com/premium_photo-1679076061298-8e08f84c9f95?w=900&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=NHwxMjA3fDA%3D',
+     'Koken is mijn hobby',CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
 
-    ('sara_food', 'sara@receta.com', '',
-     NULL, 'https://receta.com/photos/sara.jpg',
+    ('558943c2-0879-4a39-8563-59a097d7dd96','sara_food', 'sara@receta.com', 'https://plus.unsplash.com/premium_photo-1770447616600-139515d59a39?q=80&w=1374&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=NHwxMjA3fDA%3D',
      'Liefhebber van gezonde en vegetarische gerechten.',
      CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
 
-    ('peter_chef', 'peter@receta.com', '',
-     NULL, NULL,
+    ('9ff19590-29ef-4a27-bb1f-a8d1dd90e2e8','peter_chef', 'peter@receta.com', 'https://images.unsplash.com/photo-1627729205753-52d2ddeefce1?w=900&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=NHwxMjA3fDA%3D',
      'Ik experimenteer graag met nieuwe smaken.',
      CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
 
-    ('lisa_bakt', 'lisa@receta.com', '',
-     NULL, 'https://receta.com/photos/lisa.jpg',
+    ('608a5ff3-1715-485a-8170-c9f20b4ce3ca', 'lisa_bakt', 'lisa_bakt@receta.com', 'https://plus.unsplash.com/premium_photo-1792955403624-365ca397c8f1?w=900&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=NHwxMjA3fDA%3D',
      'Mijn passie is bakken en desserts maken.',
      CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
 
-    ('tom_foodie', 'tom@receta.com', '',
-     NULL, NULL,
+    ('052a934e-99fc-4214-864f-aa8674648902','tom_foodie', 'tom@receta.com', 'https://media.istockphoto.com/id/2234215664/photo/a-company-manager-at-his-working-desk-showing-worried-face-expression.webp?a=1&b=1&s=612x612&w=0&k=20&c=yCBkOfhAwK6XjR4e64R2LPH4HZjQ180UiYj5_lFxY9A=',
      'Ik deel graag mijn favoriete recepten.',
      CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
 
@@ -173,7 +166,7 @@ VALUES
         (SELECT recipe_id
          FROM recipes
          WHERE title = 'Spaghetti Bolognese'),
-        'https://receta.com/photos/spaghetti-bolognese.jpg',
+        'https://www.leukerecepten.nl/app/uploads/2025/07/spaghetti-bolognese_2.jpg',
         CURRENT_TIMESTAMP,
         CURRENT_TIMESTAMP
     ),
@@ -181,7 +174,7 @@ VALUES
         (SELECT recipe_id
          FROM recipes
          WHERE title = 'Pannenkoeken'),
-        'https://receta.com/photos/pancakes.jpg',
+        'https://uitdekeukenvanfatima.nl/wp-content/uploads/2018/01/IMG_2824-2-1.jpg',
         CURRENT_TIMESTAMP,
         CURRENT_TIMESTAMP
     ),
@@ -189,7 +182,7 @@ VALUES
         (SELECT recipe_id
          FROM recipes
          WHERE title = 'Caesarsalade'),
-        'https://receta.com/photos/caesar-salad.jpg',
+        'https://www.leukerecepten.nl/app/uploads/2025/06/caesar-salade_.jpg',
         CURRENT_TIMESTAMP,
         CURRENT_TIMESTAMP
     ),
@@ -197,7 +190,7 @@ VALUES
         (SELECT recipe_id
          FROM recipes
          WHERE title = 'Tomatensoep'),
-        'https://receta.com/photos/tomato-soup.jpg',
+        'https://media.istockphoto.com/id/2083032901/photo/fresh-tomato-soup-in-a-white-bowl-on-a-white-backgroundtomato-soup-with-basil-and-olive-oil.webp?a=1&b=1&s=612x612&w=0&k=20&c=nMhlSU6s5NoagY8kGxAm5bDFpSBQvxeqZU8jEUxl3jU=',
         CURRENT_TIMESTAMP,
         CURRENT_TIMESTAMP
     ),
@@ -205,7 +198,7 @@ VALUES
         (SELECT recipe_id
          FROM recipes
          WHERE title = 'Gebakken zalm met groenten'),
-        'https://images.unsplash.com/photo-1791398667285-345d7cc05a04?q=80&w=763&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=NHwxMjA3fDA%3D',
+        'https://images.unsplash.com/photo-1519708227418-c8fd9a32b7a2?q=80&w=2340&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=NHwxMjA3fDA%3D',
         CURRENT_TIMESTAMP,
         CURRENT_TIMESTAMP
     );

@@ -3,10 +3,13 @@ package nl.novi.recipeapp.services;
 import nl.novi.recipeapp.dtos.ingredient.IngredientRequestDto;
 import nl.novi.recipeapp.dtos.ingredient.IngredientResponseDto;
 import nl.novi.recipeapp.entities.IngredientEntity;
+import nl.novi.recipeapp.exceptions.ResourceInUseException;
+import nl.novi.recipeapp.exceptions.ResourceNotFoundException;
 import nl.novi.recipeapp.mappers.IngredientMapper;
 import nl.novi.recipeapp.repositories.IngredientRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import nl.novi.recipeapp.exceptions.ResourceAlreadyExistsException;
 
 import java.util.List;
 
@@ -41,7 +44,7 @@ public class IngredientService {
 
         if (ingredientRepository.existsByNameIgnoreCase(
                 requestDto.name().trim())) {
-            throw new IllegalArgumentException(
+            throw new ResourceAlreadyExistsException(
                     "Ingredient already exists: " + requestDto.name()
             );
         }
@@ -69,7 +72,7 @@ public class IngredientService {
 
         if (nameChanged
                 && ingredientRepository.existsByNameIgnoreCase(newName)) {
-            throw new IllegalArgumentException(
+            throw new ResourceAlreadyExistsException(
                     "Ingredient already exists: " + newName
             );
         }
@@ -84,7 +87,18 @@ public class IngredientService {
 
 
     public void deleteIngredient(Long id) {
+
         IngredientEntity existingIngredient = findIngredientById(id);
+
+        boolean isInUse = ingredientRepository
+                .existsByRecipeIngredients_Ingredient_IngredientId((id));
+
+        if (isInUse) {
+            throw new ResourceInUseException(
+                    "Dit ingrediënt kan niet worden verwijderd omdat het nog aan een of meerdere recepten gekoppeld is."
+            );
+
+        }
 
         ingredientRepository.delete(existingIngredient);
     }
@@ -93,7 +107,7 @@ public class IngredientService {
 
         return ingredientRepository.findById(id)
                 .orElseThrow(() ->
-                        new RuntimeException(
+                        new ResourceNotFoundException(
                                 "Ingredient not found with ID: " + id
                         )
                 );

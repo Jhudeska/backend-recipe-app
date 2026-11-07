@@ -37,7 +37,8 @@ public class RecipeEntity extends BaseEntity{
     private UserProfileEntity user;
 
     @OneToMany(mappedBy = "recipe",
-                cascade = CascadeType.REMOVE
+                cascade = CascadeType.REMOVE,
+                orphanRemoval = true
     )
     private List<RecipeIngredientEntity> ingredients = new ArrayList<>();
 

@@ -11,4 +11,6 @@ public interface IngredientRepository extends JpaRepository<IngredientEntity, Lo
     Optional<IngredientEntity> findByNameIgnoreCase(String name);
 
     boolean existsByNameIgnoreCase(String name);
+//    boolean existsByRecipes_Id(Long ingredientId);
+    boolean existsByRecipeIngredients_Ingredient_IngredientId(Long recipeIngredientsIngredientIngredientId);
 }

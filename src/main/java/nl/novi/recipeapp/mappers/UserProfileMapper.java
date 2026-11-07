@@ -27,8 +27,6 @@ public class UserProfileMapper {
         return new UserProfileEntity(
                 dto.username(),
                 dto.email(),
-                dto.password(),
-                null,
                 dto.profilePhotoUrl(),
                 dto.bio()
         );

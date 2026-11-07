@@ -6,6 +6,8 @@ import nl.novi.recipeapp.dtos.recipeingredient.RecipeIngredientResponseDto;
 import nl.novi.recipeapp.entities.IngredientEntity;
 import nl.novi.recipeapp.entities.RecipeEntity;
 import nl.novi.recipeapp.entities.RecipeIngredientEntity;
+import nl.novi.recipeapp.exceptions.ResourceAlreadyExistsException;
+import nl.novi.recipeapp.exceptions.ResourceNotFoundException;
 import nl.novi.recipeapp.mappers.RecipeIngredientMapper;
 import nl.novi.recipeapp.repositories.IngredientRepository;
 import nl.novi.recipeapp.repositories.RecipeIngredientRepository;
@@ -75,19 +77,19 @@ public class RecipeIngredientService {
         Long ingredientId = requestDto.ingredientId();
 
         RecipeEntity recipe = recipeRepository.findById(recipeId)
-                .orElseThrow(() -> new IllegalArgumentException(
+                .orElseThrow(() -> new ResourceNotFoundException(
                         "Recipe not found with ID: " + recipeId
                 ));
 
         IngredientEntity ingredient = ingredientRepository.findById(ingredientId)
-                .orElseThrow(() -> new IllegalArgumentException(
+                .orElseThrow(() -> new ResourceNotFoundException(
                         "Ingredient not found with ID: " + ingredientId
                 ));
 
         if (recipeIngredientRepository
                 .existsByRecipe_RecipeIdAndIngredient_IngredientId(
                         recipeId, ingredientId)) {
-            throw new IllegalArgumentException(
+            throw new ResourceAlreadyExistsException(
                     "This ingredient is already linked to recipe ID: "
                             + recipeId
             );
@@ -126,20 +128,20 @@ public class RecipeIngredientService {
                 && recipeIngredientRepository
                 .existsByRecipe_RecipeIdAndIngredient_IngredientIdAndRecipeIngredientIdNot(
                         recipeId, ingredientId, id)) {
-            throw new IllegalArgumentException(
+            throw new ResourceAlreadyExistsException(
                     "This ingredient is already linked to recipe ID: "
                             + recipeId
             );
         }
 
         RecipeEntity recipe = recipeRepository.findById(recipeId)
-                .orElseThrow(() -> new RuntimeException(
+                .orElseThrow(() -> new ResourceNotFoundException(
                         "Recipe not found with ID: " + recipeId
                 ));
 
         IngredientEntity ingredient =
                 ingredientRepository.findById(ingredientId)
-                        .orElseThrow(() -> new RuntimeException(
+                        .orElseThrow(() -> new ResourceNotFoundException(
                                 "Ingredient not found with ID: " + ingredientId
                         ));
 
@@ -165,7 +167,7 @@ public class RecipeIngredientService {
     private RecipeIngredientEntity findRecipeIngredientById(Long id) {
 
         return recipeIngredientRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException(
+                .orElseThrow(() -> new ResourceNotFoundException(
                         "Recipe ingredient not found with ID: " + id
                 ));
     }

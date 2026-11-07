@@ -1,6 +1,8 @@
 package nl.novi.recipeapp.services;
 
 import nl.novi.recipeapp.dtos.category.CategoryResponseDto;
+import nl.novi.recipeapp.exceptions.ResourceAlreadyExistsException;
+import nl.novi.recipeapp.exceptions.ResourceNotFoundException;
 import org.springframework.transaction.annotation.Transactional;
 import nl.novi.recipeapp.dtos.category.CategoryRequestDto;
 import nl.novi.recipeapp.entities.CategoryEntity;
@@ -40,7 +42,7 @@ public class CategoryService {
     public CategoryResponseDto createCategory(CategoryRequestDto categoryRequestDto) {
 
         if (categoryRepository.existsByName(categoryRequestDto.name())) {
-            throw new IllegalArgumentException(
+            throw new ResourceAlreadyExistsException(
                     "Deze categorienaam bestaat al: " + categoryRequestDto.name()
             );
         }
@@ -62,7 +64,7 @@ public class CategoryService {
 
         if (nameChanged
                 && categoryRepository.existsByName(categoryRequestDto.name())) {
-            throw new IllegalArgumentException(
+            throw new ResourceAlreadyExistsException(
                     "Deze categorienaam bestaat al: " + categoryRequestDto.name()
             );
         }
@@ -85,7 +87,7 @@ public class CategoryService {
     private CategoryEntity findCategoryById(Long id) {
         return categoryRepository.findById(id)
                 .orElseThrow(() ->
-                        new RuntimeException(
+                        new ResourceNotFoundException(
                                 "Categorie niet gevonden met ID: " + id
                         )
                 );
